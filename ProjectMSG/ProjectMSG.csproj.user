@@ -7,17 +7,29 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="View\Admin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\Auth.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\Content.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\Profile.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\Registration.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\Testing.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="View\Admin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\Auth.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -27,7 +39,13 @@
     <Page Update="View\GeneralWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="View\Profile.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\Registration.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\Testing.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

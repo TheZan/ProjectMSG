@@ -1,4 +1,4 @@
-﻿<Page x:Class="ProjectMSG.View.Content"
+﻿<Page x:Class="ProjectMSG.View.Testing"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,7 +13,7 @@
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
       DataContext="{Binding ContentViewModel, Source={StaticResource ViewModelLocator}}"
-      Title="Content">
+      Title="Testing">
 
     <Grid>
         <Grid.RowDefinitions>
@@ -82,7 +82,7 @@
             </materialDesign:ColorZone>
         </materialDesign:DrawerHost>
         <StackPanel Grid.Row="1">
-            <TextBlock>Content</TextBlock>
+            <TextBlock>Testing</TextBlock>
         </StackPanel>
     </Grid>
 </Page>

@@ -8,9 +8,9 @@ using System.Text;
 
 namespace ProjectMSG.ViewModel
 {
-    public class ContentViewModel : BindableBase, INotifyPropertyChanged
+    public class ProfileViewModel : BindableBase, INotifyPropertyChanged
     {
-        public ContentViewModel(PageService pageService, EventBus eventBus, MessageBus messageBus)
+        public ProfileViewModel(PageService pageService, EventBus eventBus, MessageBus messageBus)
         {
             _pageService = pageService;
             _eventBus = eventBus;

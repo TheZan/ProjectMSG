@@ -18,7 +18,10 @@ namespace ProjectMSG
             services.AddTransient<MainViewModel>();
             services.AddTransient<AuthViewModel>();
             services.AddTransient<RegistrationViewModel>();
-            services.AddScoped<ContentViewModel>();
+            services.AddSingleton<ContentViewModel>();
+            services.AddSingleton<TestingViewModel>();
+            services.AddSingleton<ProfileViewModel>();
+            services.AddSingleton<AdminViewModel>();
 
             services.AddSingleton<PageService>();
             services.AddSingleton<EventBus>();
@@ -38,5 +41,8 @@ namespace ProjectMSG
         public AuthViewModel AuthViewModel => _provider.GetRequiredService<AuthViewModel>();
         public RegistrationViewModel RegistrationViewModel => _provider.GetRequiredService<RegistrationViewModel>();
         public ContentViewModel ContentViewModel => _provider.GetRequiredService<ContentViewModel>();
+        public TestingViewModel TestingViewModel => _provider.GetRequiredService<TestingViewModel>();
+        public ProfileViewModel ProfileViewModel => _provider.GetRequiredService<ProfileViewModel>();
+        public AdminViewModel AdminViewModel => _provider.GetRequiredService<AdminViewModel>();
     }
 }

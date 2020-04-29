@@ -59,3 +59,9 @@ C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\bin\Debug\netcoreapp3.1\DevExpre
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\ProjectMSG.csproj.Fody.CopyLocal.cache
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Content.g.cs
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Content.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Testing.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Testing.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Admin.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Profile.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Admin.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Profile.baml
