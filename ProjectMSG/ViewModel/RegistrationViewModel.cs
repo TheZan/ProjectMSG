@@ -46,10 +46,19 @@ namespace ProjectMSG.ViewModel
             }
         }
 
-        public ICommand BackToAuth => new AsyncCommand(async () =>
+        private RelayCommand backToAuth;
+
+        public RelayCommand BackToAuth
         {
-            _pageService.ChangePage(new Auth());
-        });
+            get
+            {
+                return backToAuth ??
+                  (backToAuth = new RelayCommand(obj =>
+                  {
+                      _pageService.ChangePage(new Auth());
+                  }));
+            }
+        }
 
         #endregion
 

@@ -4,10 +4,21 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProjectMSG"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
         mc:Ignorable="d"
+        MinHeight="400"
+        MinWidth="400"
         DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
         Title="Мультимедийное учебное пособие" Height="450" Width="800">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="topPanelVisability" />
+    </Window.Resources>
     <Grid>
-        <Frame Content="{Binding PageSource}" NavigationUIVisibility="Hidden"></Frame>
+        <Frame Content="{Binding PageSource}" NavigationUIVisibility="Hidden"/>
     </Grid>
 </Window>

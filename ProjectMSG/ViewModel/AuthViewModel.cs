@@ -150,15 +150,26 @@ namespace ProjectMSG.ViewModel
                       LoadingVisability = true;
                       Password = GetPassword(obj);
                       await Task.Run(() => LoginUser());
-                      OpenGeneral();
+                      OpenContent();
                   }));
             }
         }
 
-        public ICommand RegistrationCommand => new DelegateCommand(() =>
+        private RelayCommand registrationCommand;
+
+        public RelayCommand RegistrationCommand
         {
-            _pageService.ChangePage(new Registration());
-        });
+            get
+            {
+                return registrationCommand ??
+                  (registrationCommand = new RelayCommand(obj =>
+                  {
+                      _pageService.ChangePage(new Registration());
+                  }));
+            }
+        }
+
+        
 
         #endregion
 
@@ -203,9 +214,12 @@ namespace ProjectMSG.ViewModel
             return password;
         }
 
-        private void OpenGeneral()
+        private void OpenContent()
         {
-            
+            if (CompletedLogin)
+            {
+                _pageService.ChangePage(new Content());
+            }
         }
 
         #endregion
@@ -220,6 +234,7 @@ namespace ProjectMSG.ViewModel
                 PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             }
         }
+
         #endregion
     }
 }
