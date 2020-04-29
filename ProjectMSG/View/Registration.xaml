@@ -1,0 +1,37 @@
+﻿<Page x:Class="ProjectMSG.View.Registration"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:ProjectMSG.View"
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+      Background="{DynamicResource MaterialDesignPaper}"
+      TextElement.FontWeight="Medium"
+      TextElement.FontSize="14"
+      FontFamily="{materialDesign:MaterialDesignFont}"
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      DataContext="{Binding RegistrationViewModel, Source={StaticResource ViewModelLocator}}"
+      Title="Registration">
+
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="loadingVisability" />
+    </Page.Resources>
+    
+    <Grid Background="#00B0FF">
+        <Rectangle Margin="10" RadiusY="10" RadiusX="10" VerticalAlignment="Center" Fill="White" Height="350" Width="300"/>
+        <StackPanel VerticalAlignment="Center" Width="250">
+            <TextBox IsEnabled="{Binding ControlDisable}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Имя" Margin="10" Text="{Binding Firstname, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox IsEnabled="{Binding ControlDisable}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Фамилия" Margin="10" Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}"/>
+            <TextBox IsEnabled="{Binding ControlDisable}" Style="{StaticResource MaterialDesignFloatingHintTextBox}" materialDesign:HintAssist.Hint="Логин" Margin="10" Text="{Binding Login, UpdateSourceTrigger=PropertyChanged}"/>
+            <PasswordBox IsEnabled="{Binding ControlDisable}" x:Name="password" Style="{StaticResource MaterialDesignFloatingHintPasswordBox}" materialDesign:HintAssist.Hint="Пароль" Margin="10"/>
+            <StackPanel Margin="5" Orientation="Horizontal">
+                <Button IsEnabled="{Binding ControlDisable}" Command="{Binding BackToAuth}" Foreground="White" Content="Назад"></Button>
+                <Button Margin="50,0,0,0" IsEnabled="{Binding ControlDisable}" Command="{Binding RegisterUser}" CommandParameter="{Binding ElementName=password, UpdateSourceTrigger=PropertyChanged}" Foreground="White" Content="Регистрация"/>
+            </StackPanel>
+            <TextBlock TextWrapping="Wrap" Text="{Binding WarningText}" Margin="5" TextAlignment="Center" Foreground="Gray"/>
+        </StackPanel>
+        <ProgressBar Visibility="{Binding LoadingVisability, UpdateSourceTrigger=PropertyChanged, Converter={StaticResource loadingVisability}}" Height="30" Width="30" Style="{StaticResource MaterialDesignCircularProgressBar}" IsIndeterminate="True" VerticalAlignment="Center" HorizontalAlignment="Center"></ProgressBar>
+    </Grid>
+</Page>
