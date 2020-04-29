@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NETCOREAPP;NETCOREAPP3_1
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\App.xaml
-7308257702
+8-1307661264
 
-39-1376487081
+42-911525307
 215864138226
-View\Admin.xaml;View\Auth.xaml;View\Content.xaml;View\GeneralWindow.xaml;View\Profile.xaml;View\Registration.xaml;View\Testing.xaml;
+View\Admin.xaml;View\AdminSection.xaml;View\Auth.xaml;View\Content.xaml;View\GeneralWindow.xaml;View\Profile.xaml;View\Registration.xaml;View\Testing.xaml;
 
 True
 

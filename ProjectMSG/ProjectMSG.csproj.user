@@ -1,6 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <PropertyGroup />
+  <PropertyGroup>
+    <_LastSelectedProfileId>C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\Properties\PublishProfiles\FolderProfile.pubxml</_LastSelectedProfileId>
+  </PropertyGroup>
   <ItemGroup>
     <ApplicationDefinition Update="App.xaml">
       <SubType>Designer</SubType>
@@ -8,6 +10,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Update="View\Admin.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="View\AdminSection.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="View\Auth.xaml.cs">
@@ -28,6 +33,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="View\Admin.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\AdminSection.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\Auth.xaml">

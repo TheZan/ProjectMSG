@@ -1,5 +1,6 @@
 ﻿using DevExpress.Mvvm;
 using Microsoft.EntityFrameworkCore;
+using ProjectMSG.Message;
 using ProjectMSG.Model;
 using ProjectMSG.Service;
 using ProjectMSG.View;
@@ -186,7 +187,7 @@ namespace ProjectMSG.ViewModel
                     if (user != null)
                     {
                         userId = user.UserId;
-                        userRole = user.Role;
+                        Role = user.Role;
 
                         if (PBKDF2HashHelper.VerifyPassword(Password, user.Password))
                         {
@@ -218,7 +219,14 @@ namespace ProjectMSG.ViewModel
         {
             if (CompletedLogin)
             {
-                _pageService.ChangePage(new Content());
+                if (Role == "Admin")
+                {
+                    _pageService.ChangePage(new Admin());
+                }
+                else
+                {
+                    _pageService.ChangePage(new Content());
+                }
             }
         }
 

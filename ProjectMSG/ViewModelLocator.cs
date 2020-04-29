@@ -22,6 +22,7 @@ namespace ProjectMSG
             services.AddSingleton<TestingViewModel>();
             services.AddSingleton<ProfileViewModel>();
             services.AddSingleton<AdminViewModel>();
+            services.AddSingleton<AdminSectionViewModel>();
 
             services.AddSingleton<PageService>();
             services.AddSingleton<EventBus>();
@@ -44,5 +45,6 @@ namespace ProjectMSG
         public TestingViewModel TestingViewModel => _provider.GetRequiredService<TestingViewModel>();
         public ProfileViewModel ProfileViewModel => _provider.GetRequiredService<ProfileViewModel>();
         public AdminViewModel AdminViewModel => _provider.GetRequiredService<AdminViewModel>();
+        public AdminSectionViewModel AdminSectionViewModel => _provider.GetRequiredService<AdminSectionViewModel>();
     }
 }

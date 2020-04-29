@@ -16,73 +16,10 @@
       Title="Admin">
 
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="70"/>
-            <RowDefinition/>
-        </Grid.RowDefinitions>
-        <materialDesign:DrawerHost Grid.RowSpan="2" Panel.ZIndex="100">
-            <materialDesign:DrawerHost.LeftDrawerContent>
-                <StackPanel Background="AliceBlue" Width="200">
-                    <ToggleButton 
-                        Style="{StaticResource MaterialDesignHamburgerToggleButton}" 
-                        VerticalAlignment="Top"
-                        HorizontalAlignment="Right" 
-                        Margin="16"
-                        IsChecked="{Binding ElementName=MenuToggleButton, Path=IsChecked, Mode=TwoWay}"
-                        Command="{x:Static materialDesign:DrawerHost.CloseDrawerCommand}"
-                        CommandParameter="{x:Static Dock.Left}"/>
-                    <ListBox Margin="10">
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Home"/>
-                                <TextBlock Margin="10,0,0,0" Text="Главная">
-                                    <TextBlock.InputBindings>
-                                        <MouseBinding Gesture="LeftClick" Command="{Binding SelectContent}"/>
-                                    </TextBlock.InputBindings>
-                                </TextBlock>
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Pencil"/>
-                                <TextBlock Margin="10,0,0,0" Text="Тесты">
-                                    <TextBlock.InputBindings>
-                                        <MouseBinding Gesture="LeftClick" Command="{Binding SelectTesting}"/>
-                                    </TextBlock.InputBindings>
-                                </TextBlock>
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Account"/>
-                                <TextBlock Margin="10,0,0,0" Text="Профиль">
-                                    <TextBlock.InputBindings>
-                                        <MouseBinding Gesture="LeftClick" Command="{Binding SelectProfile}"/>
-                                    </TextBlock.InputBindings>
-                                </TextBlock>
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="UserEdit"/>
-                                <TextBlock Margin="10,0,0,0" Text="Администрирование">
-                                    <TextBlock.InputBindings>
-                                        <MouseBinding Gesture="LeftClick" Command="{Binding SelectAdmin}"/>
-                                    </TextBlock.InputBindings>
-                                </TextBlock>
-                            </StackPanel>
-                        </ListBoxItem>
-                    </ListBox>
-                </StackPanel>
-            </materialDesign:DrawerHost.LeftDrawerContent>
-            <materialDesign:ColorZone Mode="PrimaryLight" Padding="16">
-                <StackPanel Orientation="Horizontal">
-                    <ToggleButton x:Name="MenuToggleButton" Style="{DynamicResource MaterialDesignHamburgerToggleButton}" Command="{x:Static materialDesign:DrawerHost.OpenDrawerCommand}" CommandParameter="{x:Static Dock.Left}"/>
-                </StackPanel>
-            </materialDesign:ColorZone>
-        </materialDesign:DrawerHost>
-        <StackPanel Grid.Row="1">
-            <TextBlock>Admin</TextBlock>
+        <StackPanel VerticalAlignment="Center">
+            <TextBlock Text="Выберите категорию для редактирвоания" TextAlignment="Center" Margin="10" FontSize="28"></TextBlock>
+            <Button Command="{Binding SelectSection}" Foreground="White" Margin="10" Content="Содержание"></Button>
+            <Button Foreground="White" Margin="10" Content="Тесты"></Button>
         </StackPanel>
     </Grid>
 </Page>

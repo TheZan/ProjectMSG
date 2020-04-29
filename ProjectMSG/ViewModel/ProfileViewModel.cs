@@ -69,20 +69,6 @@ namespace ProjectMSG.ViewModel
             }
         }
 
-        private RelayCommand selectAdmin;
-
-        public RelayCommand SelectAdmin
-        {
-            get
-            {
-                return selectAdmin ??
-                  (selectAdmin = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Admin());
-                  }));
-            }
-        }
-
         #endregion
     }
 }

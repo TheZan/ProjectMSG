@@ -27,58 +27,16 @@ namespace ProjectMSG.ViewModel
 
         #region Command
 
-        private RelayCommand selectContent;
+        private RelayCommand selectSection;
 
-        public RelayCommand SelectContent
+        public RelayCommand SelectSection
         {
             get
             {
-                return selectContent ??
-                  (selectContent = new RelayCommand(obj =>
+                return selectSection ??
+                  (selectSection = new RelayCommand(obj =>
                   {
-                      _pageService.ChangePage(new Content());
-                  }));
-            }
-        }
-
-        private RelayCommand selectTesting;
-
-        public RelayCommand SelectTesting
-        {
-            get
-            {
-                return selectTesting ??
-                  (selectTesting = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Testing());
-                  }));
-            }
-        }
-
-        private RelayCommand selectProfile;
-
-        public RelayCommand SelectProfile
-        {
-            get
-            {
-                return selectProfile ??
-                  (selectProfile = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Profile());
-                  }));
-            }
-        }
-
-        private RelayCommand selectAdmin;
-
-        public RelayCommand SelectAdmin
-        {
-            get
-            {
-                return selectAdmin ??
-                  (selectAdmin = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Admin());
+                      _pageService.ChangePage(new AdminSection());
                   }));
             }
         }

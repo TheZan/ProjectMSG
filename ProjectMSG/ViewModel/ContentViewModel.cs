@@ -1,10 +1,13 @@
 ﻿using DevExpress.Mvvm;
+using ProjectMSG.Message;
 using ProjectMSG.Service;
 using ProjectMSG.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Text;
+using System.Windows;
 
 namespace ProjectMSG.ViewModel
 {
@@ -18,6 +21,8 @@ namespace ProjectMSG.ViewModel
         }
 
         #region Properties
+
+        private List<Info> info = new List<Info>();
 
         private readonly PageService _pageService;
         private readonly EventBus _eventBus;
@@ -65,20 +70,6 @@ namespace ProjectMSG.ViewModel
                   (selectProfile = new RelayCommand(obj =>
                   {
                       _pageService.ChangePage(new Profile());
-                  }));
-            }
-        }
-
-        private RelayCommand selectAdmin;
-
-        public RelayCommand SelectAdmin
-        {
-            get
-            {
-                return selectAdmin ??
-                  (selectAdmin = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Admin());
                   }));
             }
         }

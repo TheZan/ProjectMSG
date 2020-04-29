@@ -15,6 +15,10 @@
       DataContext="{Binding ContentViewModel, Source={StaticResource ViewModelLocator}}"
       Title="Content">
 
+    <Page.Resources>
+        <BooleanToVisibilityConverter x:Key="IsAdmin" />
+    </Page.Resources>
+    
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="70"/>
@@ -58,16 +62,6 @@
                                 <TextBlock Margin="10,0,0,0" Text="Профиль">
                                     <TextBlock.InputBindings>
                                         <MouseBinding Gesture="LeftClick" Command="{Binding SelectProfile}"/>
-                                    </TextBlock.InputBindings>
-                                </TextBlock>
-                            </StackPanel>
-                        </ListBoxItem>
-                        <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="UserEdit"/>
-                                <TextBlock Margin="10,0,0,0" Text="Администрирование">
-                                    <TextBlock.InputBindings>
-                                        <MouseBinding Gesture="LeftClick" Command="{Binding SelectAdmin}"/>
                                     </TextBlock.InputBindings>
                                 </TextBlock>
                             </StackPanel>
