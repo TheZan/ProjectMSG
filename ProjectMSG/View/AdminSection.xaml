@@ -16,8 +16,28 @@
       Title="AdminSection">
 
     <Grid>
-        <StackPanel Grid.Row="1">
-            <Button Command="{Binding Back}" Content="Назад" Foreground="White" HorizontalAlignment="Right" Margin="10"></Button>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="55"/>
+            <RowDefinition/>
+            <RowDefinition Height="55"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0" Command="{Binding Back}" Content="Назад" Foreground="White" HorizontalAlignment="Right" Margin="10"></Button>
+            <ListBox Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="10" SelectedItem="{Binding SelectSection}" ItemsSource="{Binding Sections, UpdateSourceTrigger=PropertyChanged}">
+            <ListBox.ContextMenu>
+                <ContextMenu>
+                    <MenuItem Header="Удалить" Command="{Binding DelSectionCommand}"></MenuItem>
+                    <MenuItem Header="Изменить" Command="{Binding EditSectionCommand}"></MenuItem>
+                </ContextMenu>
+            </ListBox.ContextMenu>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <materialDesign:PackIcon Kind="Book"></materialDesign:PackIcon>
+                            <TextBlock Foreground="Black" Text="{Binding SectionName, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        <Button Grid.Row="2" Command="{Binding AddSectionCommand}" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Добавить" Foreground="White"></Button>
     </Grid>
 </Page>

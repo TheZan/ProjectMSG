@@ -67,3 +67,7 @@ C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Adm
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Profile.baml
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\AdminSection.g.cs
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\AdminSection.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\AddSectionDialog.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\AddSectionDialog.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\EditSectionDialog.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\EditSectionDialog.baml

@@ -1,4 +1,5 @@
 ﻿using DevExpress.Mvvm;
+using ProjectMSG.Message;
 using ProjectMSG.Service;
 using ProjectMSG.View;
 using System;
@@ -34,7 +35,7 @@ namespace ProjectMSG.ViewModel
             get
             {
                 return selectSection ??
-                  (selectSection = new RelayCommand(obj =>
+                  (selectSection = new RelayCommand(async obj =>
                   {
                       _pageService.ChangePage(new AdminSection());
                   }));

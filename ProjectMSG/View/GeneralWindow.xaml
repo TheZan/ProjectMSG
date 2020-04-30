@@ -14,7 +14,7 @@
         MinHeight="400"
         MinWidth="400"
         DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
-        Title="Мультимедийное учебное пособие" Height="450" Width="800">
+        Title="Мультимедийное учебное пособие" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="topPanelVisability" />
     </Window.Resources>
