@@ -112,6 +112,21 @@ namespace ProjectMSG.ViewModel
             }
         }
 
+        private RelayCommand goToArticle;
+
+        public RelayCommand GoToArticle
+        {
+            get
+            {
+                return goToArticle ??
+                  (goToArticle = new RelayCommand(async obj =>
+                  {
+                      _pageService.ChangePage(new AdminArticle());
+                      await _messageBus.SendTo<AdminArticelViewModel>(new SectionToArticle(SectionId, SectionName));
+                  }));
+            }
+        }
+
         private RelayCommand addSection;
 
         public RelayCommand AddSectionCommand

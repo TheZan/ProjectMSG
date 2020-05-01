@@ -327,6 +327,14 @@
           }
         }
       },
+      "Microsoft.Xaml.Behaviors.Wpf/1.1.19": {
+        "runtime": {
+          "lib/netcoreapp3.0/Microsoft.Xaml.Behaviors.dll": {
+            "assemblyVersion": "1.1.0.0",
+            "fileVersion": "1.1.19.35512"
+          }
+        }
+      },
       "NETStandard.Library/1.6.1": {
         "dependencies": {
           "Microsoft.NETCore.Platforms": "2.0.0",
@@ -2018,6 +2026,13 @@
       "sha512": "sha512-+FWlwd//+Tt56316p00hVePBCouXyEzT86Jb3+AuRotTND0IYn0OO3obs1gnQEs/txEnt+rF2JBGLItTG+Be6A==",
       "path": "microsoft.win32.registry/4.5.0",
       "hashPath": "microsoft.win32.registry.4.5.0.nupkg.sha512"
+    },
+    "Microsoft.Xaml.Behaviors.Wpf/1.1.19": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-5sPWkbqImc2t1aQwIfJcKsUo7tOg1Tr8+6xVzZJB56Nzt4u9NlpcLofgdX/aRYpPKdWDA3U23Akw1KQzU5e82g==",
+      "path": "microsoft.xaml.behaviors.wpf/1.1.19",
+      "hashPath": "microsoft.xaml.behaviors.wpf.1.1.19.nupkg.sha512"
     },
     "NETStandard.Library/1.6.1": {
       "type": "package",

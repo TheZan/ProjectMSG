@@ -23,7 +23,6 @@ C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\bin\Debug\netcoreapp3.1\Microsof
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\App.baml
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Auth.baml
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\ProjectMSG.csproj.CopyComplete
-C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\ProjectMSG.csprojAssemblyReference.cache
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\bin\Debug\netcoreapp3.1\MaterialDesignColors.dll
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\bin\Debug\netcoreapp3.1\MaterialDesignThemes.Wpf.dll
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\bin\Debug\netcoreapp3.1\Microsoft.Bcl.AsyncInterfaces.dll
@@ -71,3 +70,6 @@ C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Add
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\AddSectionDialog.baml
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\EditSectionDialog.g.cs
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\EditSectionDialog.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\bin\Debug\netcoreapp3.1\Microsoft.Xaml.Behaviors.dll
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\AdminArticle.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\AdminArticle.baml
