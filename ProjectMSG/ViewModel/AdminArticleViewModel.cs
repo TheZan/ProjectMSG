@@ -39,11 +39,8 @@ namespace ProjectMSG.ViewModel
         private readonly EventBus _eventBus;
         private readonly MessageBus _messageBus;
 
-        AddSectionDialog addSectionDialog;
-        EditSectionDialog editSectionDialog;
-
-        private string sectionNameAdd;
-        private string sectionNameEdit;
+        AddArticleDialog addArticleDialog;
+        EditArticleDialog editArticleDialog;
 
         private Article selectArticle = new Article();
         public Article SelectArticle
@@ -139,6 +136,12 @@ namespace ProjectMSG.ViewModel
                 NotifyPropertyChanged("GetSetctionName");
             }
         }
+
+        private string articleNameAdd;
+        private string articleTextAdd;
+        private List<Photo> articlePhotoAdd;
+        private IList<Photo> articlePhotoDel;
+
         #endregion
 
         #region Command
@@ -157,78 +160,86 @@ namespace ProjectMSG.ViewModel
             }
         }
 
-        //private RelayCommand addSection;
+        private RelayCommand addArticle;
 
-        //public RelayCommand AddSectionCommand
-        //{
-        //    get
-        //    {
-        //        return addSection ??
-        //          (addSection = new RelayCommand(async obj =>
-        //          {
-        //              addSectionDialog = new AddSectionDialog();
-        //              if (addSectionDialog.ShowDialog() == true)
-        //              {
-        //                  sectionNameAdd = addSectionDialog.GetSectionName;
-        //                  await Task.Run(() => AddSection());
-        //              }
-        //          }));
-        //    }
-        //}
+        public RelayCommand AddArticleCommand
+        {
+            get
+            {
+                return addArticle ??
+                  (addArticle = new RelayCommand(async obj =>
+                  {
+                      addArticleDialog = new AddArticleDialog();
+                      if (addArticleDialog.ShowDialog() == true)
+                      {
+                          articleNameAdd = addArticleDialog.ArticleName;
+                          articleTextAdd = addArticleDialog.ArticleText;
+                          articlePhotoAdd = new List<Photo>();
+                          articlePhotoAdd = addArticleDialog.ArticleImage;
+                          await Task.Run(() => AddArticle());
+                      }
+                  }));
+            }
+        }
 
-        //private RelayCommand delSection;
+        private RelayCommand delArticle;
 
-        //public RelayCommand DelSectionCommand
-        //{
-        //    get
-        //    {
-        //        return delSection ??
-        //          (delSection = new RelayCommand(async obj =>
-        //          {
-        //              if (SelectArticle != null)
-        //              {
-        //                  if (MessageBox.Show("Вы действительно хотите удалить раздел?", "Удаление раздела", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
-        //                  {
-        //                      return;
-        //                  }
-        //                  else
-        //                  {
-        //                      await Task.Run(() => DelSection());
-        //                  }
-        //              }
-        //              else
-        //              {
-        //                  MessageBox.Show("Выберите раздел для удаления!", "Удаление раздела", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //              }
-        //          }));
-        //    }
-        //}
+        public RelayCommand DelArticleCommand
+        {
+            get
+            {
+                return delArticle ??
+                  (delArticle = new RelayCommand(async obj =>
+                  {
+                      if (SelectArticle != null)
+                      {
+                          if (MessageBox.Show("Вы действительно хотите удалить статью?", "Удаление статьи", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                          {
+                              return;
+                          }
+                          else
+                          {
+                              await Task.Run(() => DelArticle());
+                          }
+                      }
+                      else
+                      {
+                          MessageBox.Show("Выберите статью для удаления!", "Удаление статьи", MessageBoxButton.OK, MessageBoxImage.Warning);
+                      }
+                  }));
+            }
+        }
 
-        //private RelayCommand editSection;
+        private RelayCommand editArticle;
 
-        //public RelayCommand EditSectionCommand
-        //{
-        //    get
-        //    {
-        //        return editSection ??
-        //          (editSection = new RelayCommand(async obj =>
-        //          {
-        //              if (SelectArticle != null)
-        //              {
-        //                  editSectionDialog = new EditSectionDialog(ArticleName);
-        //                  if (editSectionDialog.ShowDialog() == true)
-        //                  {
-        //                      sectionNameEdit = editSectionDialog.GetSectionName;
-        //                      await Task.Run(() => EditSection());
-        //                  }
-        //              }
-        //              else
-        //              {
-        //                  MessageBox.Show("Выберите раздел для редактирования!", "Редактирование раздела", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //              }
-        //          }));
-        //    }
-        //}
+        public RelayCommand EditArticleCommand
+        {
+            get
+            {
+                return editArticle ??
+                  (editArticle = new RelayCommand(async obj =>
+                  {
+                      if (SelectArticle != null)
+                      {
+                          articlePhotoDel = new List<Photo>();
+                          await Task.Run(() => GetPhoto());
+                          editArticleDialog = new EditArticleDialog(ArticleName, ArticleText, articlePhotoAdd);
+                          if (editArticleDialog.ShowDialog() == true)
+                          {
+                              articleNameAdd = editArticleDialog.ArticleName;
+                              articleTextAdd = editArticleDialog.ArticleText;
+                              articlePhotoAdd = new List<Photo>();
+                              articlePhotoAdd = editArticleDialog.ArticleImage;
+                              await Task.Run(() => EditArticle());
+                          }
+                      }
+                      else
+                      {
+                          MessageBox.Show("Выберите раздел для редактирования!", "Редактирование раздела", MessageBoxButton.OK, MessageBoxImage.Warning);
+                      }
+                  }));
+            }
+        }
 
         #endregion
 
@@ -242,49 +253,90 @@ namespace ProjectMSG.ViewModel
             }
         }
 
-        //private async Task AddSection()
-        //{
+        private async Task AddArticle()
+        {
 
-        //    using (MSGCoreContext db = new MSGCoreContext())
-        //    {
-        //        Section add = new Section
-        //        {
-        //            SectionName = sectionNameAdd
-        //        };
-        //        await db.Section.AddAsync(add);
-        //        await db.SaveChangesAsync();
-        //        await GetSection();
-        //    }
-        //}
+            using (MSGCoreContext db = new MSGCoreContext())
+            {
+                Article add = new Article
+                {
+                    ArticleName = articleNameAdd,
+                    ArticleText = articleTextAdd,
+                    SectionId = GetSectionId
+                };
+                await db.Article.AddAsync(add);
+                await db.SaveChangesAsync();
 
-        //private async Task DelSection()
-        //{
-        //    using (MSGCoreContext db = new MSGCoreContext())
-        //    {
-        //        Section del = new Section
-        //        {
-        //            SectionId = SectionId
-        //        };
-        //        db.Section.Attach(del);
-        //        db.Section.Remove(del);
-        //        await db.SaveChangesAsync();
-        //        await GetSection();
-        //    }
-        //    SelectSection = null;
-        //}
+                var last = db.Article.ToList().Last();
+                int lastArticle = last.ArticleId;
+                for (int i = 0; i < articlePhotoAdd.Count; i++)
+                {
+                    Photo addArticlePhoto = new Photo
+                    {
+                        ArticleId = lastArticle,
+                        ArticlePhoto = articlePhotoAdd[i].ArticlePhoto
+                    };
+                    db.Photo.Add(addArticlePhoto);
+                }
+                await db.SaveChangesAsync();
 
-        //private async Task EditSection()
-        //{
+                await GetArticle();
+            }
+        }
 
-        //    using (MSGCoreContext db = new MSGCoreContext())
-        //    {
-        //        var editSection = await db.Section.Where(p => p.SectionId == SectionId).FirstOrDefaultAsync();
-        //        editSection.SectionName = sectionNameEdit;
-        //        await db.SaveChangesAsync();
-        //        await GetSection();
-        //    }
-        //    SelectSection = null;
-        //}
+        private async Task DelArticle()
+        {
+            using (MSGCoreContext db = new MSGCoreContext())
+            {
+                Article del = new Article
+                {
+                    ArticleId = ArticleId
+                };
+                db.Article.Attach(del);
+                db.Article.Remove(del);
+                await db.SaveChangesAsync();
+                await GetArticle();
+            }
+            SelectArticle = null;
+        }
+
+        private async Task EditArticle()
+        {
+
+            using (MSGCoreContext db = new MSGCoreContext())
+            {
+                var editArticle = await db.Article.Where(p => p.ArticleId == ArticleId).FirstOrDefaultAsync();
+                editArticle.ArticleName = articleNameAdd;
+                editArticle.ArticleText = articleTextAdd;
+                await db.SaveChangesAsync();
+
+                db.Photo.RemoveRange(articlePhotoDel);
+                await db.SaveChangesAsync();
+
+                for (int i = 0; i < articlePhotoAdd.Count; i++)
+                {
+                    Photo addArticlePhoto = new Photo
+                    {
+                        ArticleId = ArticleId,
+                        ArticlePhoto = articlePhotoAdd[i].ArticlePhoto
+                    };
+                    db.Photo.Add(addArticlePhoto);
+                }
+                await db.SaveChangesAsync();
+
+                await GetArticle();
+            }
+            SelectArticle = null;
+        }
+
+        private async Task GetPhoto()
+        {
+            using (MSGCoreContext db = new MSGCoreContext())
+            {
+                articlePhotoAdd = await db.Photo.Where(p => p.ArticleId == ArticleId).ToListAsync();
+                articlePhotoDel = await db.Photo.Where(p => p.ArticleId == ArticleId).ToListAsync();
+            }
+        }
 
         #endregion
 

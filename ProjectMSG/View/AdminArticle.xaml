@@ -32,8 +32,8 @@
         <ListBox x:Name="listSection" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="10" SelectedItem="{Binding SelectArticle}" ItemsSource="{Binding Articles, UpdateSourceTrigger=PropertyChanged}">
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Удалить" Command="{Binding DelSectionCommand}"/>
-                    <MenuItem Header="Изменить" Command="{Binding EditSectionCommand}"/>
+                    <MenuItem Header="Удалить" Command="{Binding DelArticleCommand}"/>
+                    <MenuItem Header="Изменить" Command="{Binding EditArticleCommand}"/>
                 </ContextMenu>
             </ListBox.ContextMenu>
             <ListBox.ItemTemplate>
@@ -45,6 +45,6 @@
                 </DataTemplate>
             </ListBox.ItemTemplate>
         </ListBox>
-        <Button Grid.Row="2" Command="{Binding AddSectionCommand}" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Добавить" Foreground="White"></Button>
+        <Button Grid.Row="2" Command="{Binding AddArticleCommand}" Margin="10" HorizontalAlignment="Left" VerticalAlignment="Bottom" Content="Добавить" Foreground="White"></Button>
     </Grid>
 </Page>

@@ -121,8 +121,11 @@ namespace ProjectMSG.ViewModel
                 return goToArticle ??
                   (goToArticle = new RelayCommand(async obj =>
                   {
-                      _pageService.ChangePage(new AdminArticle());
-                      await _messageBus.SendTo<AdminArticelViewModel>(new SectionToArticle(SectionId, SectionName));
+                      if (SelectSection != null)
+                      {
+                          _pageService.ChangePage(new AdminArticle());
+                          await _messageBus.SendTo<AdminArticelViewModel>(new SectionToArticle(SectionId, SectionName));
+                      }
                   }));
             }
         }

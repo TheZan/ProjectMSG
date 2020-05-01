@@ -9,6 +9,9 @@
     </ApplicationDefinition>
   </ItemGroup>
   <ItemGroup>
+    <Compile Update="View\AddArticleDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\AddSectionDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -27,6 +30,9 @@
     <Compile Update="View\Content.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\EditArticleDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\EditSectionDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -41,6 +47,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Page Update="View\AddArticleDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="View\AddSectionDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -57,6 +66,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\Content.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\EditArticleDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\EditSectionDialog.xaml">

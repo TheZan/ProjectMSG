@@ -21,10 +21,17 @@
             <RowDefinition/>
             <RowDefinition Height="55"/>
         </Grid.RowDefinitions>
-        <Button Grid.Row="0" Command="{Binding Back}" Content="Назад" Foreground="White" HorizontalAlignment="Right" Margin="10"></Button>
+        <Grid Grid.Row="0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition Width="100"/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="1" Command="{Binding Back}" Content="Назад" Foreground="White" HorizontalAlignment="Right" Margin="10"></Button>
+            <TextBlock Text="Список разделов:" Margin="10" VerticalAlignment="Center" TextWrapping="Wrap"/>
+        </Grid>
             <ListBox x:Name="listSection" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="10" SelectedItem="{Binding SelectSection}" ItemsSource="{Binding Sections, UpdateSourceTrigger=PropertyChanged}">
             <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
+                <i:EventTrigger EventName="MouseDoubleClick">
                     <i:InvokeCommandAction Command="{Binding GoToArticle}" CommandParameter="{Binding ElementName=listSection, Path=SelectedItem}"/>
                 </i:EventTrigger>
             </i:Interaction.Triggers>

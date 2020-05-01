@@ -16,10 +16,18 @@
       Title="Admin">
 
     <Grid>
-        <StackPanel VerticalAlignment="Center">
-            <TextBlock Text="Выберите категорию для редактирвоания" TextAlignment="Center" Margin="10" FontSize="28"></TextBlock>
-            <Button Command="{Binding SelectSection}" Foreground="White" Margin="10" Content="Содержание"></Button>
-            <Button Foreground="White" Margin="10" Content="Тесты"></Button>
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="70"/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+        <TextBlock Text="Выберите категорию для редактирвоания" TextAlignment="Center" Margin="10" FontSize="28"></TextBlock>
+        <Grid Grid.Row="1" >
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Button Grid.Column="0" Command="{Binding SelectSection}" Foreground="White" Margin="10" Content="Содержание" Cursor="Hand"></Button>
+            <Button Grid.Column="1" Foreground="White" Margin="10" Content="Тесты"></Button>
+        </Grid>
     </Grid>
 </Page>
