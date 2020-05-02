@@ -6,8 +6,14 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Documents;
+using Microsoft.EntityFrameworkCore;
+using ProjectMSG.Model;
+using Section = ProjectMSG.Model.Section;
 
 namespace ProjectMSG.ViewModel
 {
@@ -18,6 +24,13 @@ namespace ProjectMSG.ViewModel
             _pageService = pageService;
             _eventBus = eventBus;
             _messageBus = messageBus;
+
+            _messageBus.Receive<TextMessage>(this, async message =>
+            {
+                GetUserId = Convert.ToInt32(message.Text);
+            });
+
+            Task.Run(GetSection);
         }
 
         #region Properties
@@ -27,6 +40,102 @@ namespace ProjectMSG.ViewModel
         private readonly PageService _pageService;
         private readonly EventBus _eventBus;
         private readonly MessageBus _messageBus;
+
+        private int getUserId;
+
+        public int GetUserId
+        {
+            get
+            {
+                return getUserId;
+            }
+            set
+            {
+                getUserId = value;
+                NotifyPropertyChanged("GetUserId");
+            }
+        }
+
+        private Article selectArticle = new Article();
+
+        public Article SelectArticle
+        {
+            get { return selectArticle; }
+            set
+            {
+                selectArticle = value;
+                NotifyPropertyChanged("SelectArticle");
+            }
+        }
+
+        public int ArticleId
+        {
+            get
+            {
+                return SelectArticle.ArticleId;
+            }
+            set
+            {
+                SelectArticle.ArticleId = value;
+                NotifyPropertyChanged("ArticleId");
+            }
+        }
+
+        public string ArticleName
+        {
+            get
+            {
+                return SelectArticle.ArticleName;
+            }
+            set
+            {
+                SelectArticle.ArticleName = value;
+                NotifyPropertyChanged("ArticleName");
+            }
+        }
+        
+        public string ArticleText
+        {
+            get
+            {
+                return SelectArticle.ArticleText;
+            }
+            set
+            {
+                SelectArticle.ArticleText = value;
+                NotifyPropertyChanged("ArticleText");
+            }
+        }
+
+        private List<Section> sections = new List<Section>();
+
+        public List<Section> Sections
+        {
+            get
+            {
+                return sections;
+            }
+            set
+            {
+                sections = value;
+                NotifyPropertyChanged("Sections");
+            }
+        }
+
+        private List<Article> articles = new List<Article>();
+
+        public List<Article> Articles
+        {
+            get
+            {
+                return articles;
+            }
+            set
+            {
+                articles = value;
+                NotifyPropertyChanged("Articles");
+            }
+        }
 
         #endregion
 
@@ -38,11 +147,10 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return selectContent ??
-                  (selectContent = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Content());
-                  }));
+                return selectContent ??= new RelayCommand(obj =>
+                {
+                    _pageService.ChangePage(new Content());
+                });
             }
         }
 
@@ -52,11 +160,10 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return selectTesting ??
-                  (selectTesting = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Testing());
-                  }));
+                return selectTesting ??= new RelayCommand(obj =>
+                {
+                    _pageService.ChangePage(new Testing());
+                });
             }
         }
 
@@ -66,12 +173,34 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return selectProfile ??
-                  (selectProfile = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Profile());
-                  }));
+                return selectProfile ??= new RelayCommand(obj =>
+                {
+                    _pageService.ChangePage(new Profile());
+                });
             }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private async Task GetSection()
+        {
+            await using (MSGCoreContext db = new MSGCoreContext())
+            {
+                Sections = await db.Section.ToListAsync();
+                Articles = await db.Article.ToListAsync();
+            }
+        }
+
+        #endregion
+
+        #region ProperyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

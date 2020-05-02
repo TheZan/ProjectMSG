@@ -25,7 +25,7 @@ namespace ProjectMSG.ViewModel
             _eventBus = eventBus;
             _messageBus = messageBus;
 
-            Task.Run(() => GetSection());
+            Task.Run(GetSection);
         }
 
         #region Properties
@@ -104,11 +104,10 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return back ??
-                  (back = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Admin());
-                  }));
+                return back ??= new RelayCommand(obj =>
+                {
+                    _pageService.ChangePage(new Admin());
+                });
             }
         }
 
@@ -118,15 +117,14 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return goToArticle ??
-                  (goToArticle = new RelayCommand(async obj =>
-                  {
-                      if (SelectSection != null)
-                      {
-                          _pageService.ChangePage(new AdminArticle());
-                          await _messageBus.SendTo<AdminArticleViewModel>(new SectionToArticle(SectionId, SectionName));
-                      }
-                  }));
+                return goToArticle ??= new RelayCommand(async obj =>
+                {
+                    if (SelectSection != null)
+                    {
+                        _pageService.ChangePage(new AdminArticle());
+                        await _messageBus.SendTo<AdminArticleViewModel>(new SectionToArticle(SectionId, SectionName));
+                    }
+                });
             }
         }
 

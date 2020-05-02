@@ -27,7 +27,7 @@
                 <ColumnDefinition/>
             </Grid.ColumnDefinitions>
             <Button Grid.Column="0" Command="{Binding SelectSection}" Foreground="White" Margin="10" Content="Разделы и статьи" Cursor="Hand"></Button>
-            <Button Grid.Column="1" Foreground="White" Margin="10" Content="Тесты"></Button>
+            <Button Grid.Column="1" Foreground="White" Margin="10" Content="Сменить пользователя" Command="{Binding Relogin}"></Button>
         </Grid>
     </Grid>
 </Page>

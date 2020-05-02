@@ -4,7 +4,9 @@ using ProjectMSG.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Text;
+using ProjectMSG.Message;
 
 namespace ProjectMSG.ViewModel
 {
@@ -15,6 +17,11 @@ namespace ProjectMSG.ViewModel
             _pageService = pageService;
             _eventBus = eventBus;
             _messageBus = messageBus;
+
+            _messageBus.Receive<TextMessage>(this, async message =>
+            {
+                GetUserId = Convert.ToInt32(message.Text);
+            });
         }
 
         #region Properties
@@ -22,6 +29,21 @@ namespace ProjectMSG.ViewModel
         private readonly PageService _pageService;
         private readonly EventBus _eventBus;
         private readonly MessageBus _messageBus;
+
+        private int getUserId;
+
+        public int GetUserId
+        {
+            get
+            {
+                return getUserId;
+            }
+            set
+            {
+                getUserId = value;
+                NotifyPropertyChanged("GetUserId");
+            }
+        }
 
         #endregion
 
@@ -67,6 +89,16 @@ namespace ProjectMSG.ViewModel
                       _pageService.ChangePage(new Profile());
                   }));
             }
+        }
+
+        #endregion
+
+        #region ProperyChanged
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

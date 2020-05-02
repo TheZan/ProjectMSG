@@ -143,16 +143,15 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return loginCommand ??
-                  (loginCommand = new RelayCommand(async obj =>
-                  {
-                      ControlDisable = false;
-                      CompletedLogin = false;
-                      LoadingVisability = true;
-                      Password = GetPassword(obj);
-                      await Task.Run(() => LoginUser());
-                      OpenContent();
-                  }));
+                return loginCommand ??= new RelayCommand(async obj =>
+                {
+                    ControlDisable = false;
+                    CompletedLogin = false;
+                    LoadingVisability = true;
+                    Password = GetPassword(obj);
+                    await Task.Run(LoginUser);
+                    OpenContent();
+                });
             }
         }
 
@@ -162,11 +161,10 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return registrationCommand ??
-                  (registrationCommand = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Registration());
-                  }));
+                return registrationCommand ??= new RelayCommand(obj =>
+                {
+                    _pageService.ChangePage(new Registration());
+                });
             }
         }
 
@@ -180,7 +178,7 @@ namespace ProjectMSG.ViewModel
         {
             if (Login != "" && Password != "")
             {
-                using (MSGCoreContext db = new MSGCoreContext())
+                await using (MSGCoreContext db = new MSGCoreContext())
                 {
                     user = await db.Users.FirstOrDefaultAsync(u => u.Login == Login);
 
@@ -226,6 +224,9 @@ namespace ProjectMSG.ViewModel
                 else
                 {
                     _pageService.ChangePage(new Content());
+                    _messageBus.SendTo<ContentViewModel>(new TextMessage(userId.ToString()));
+                    _messageBus.SendTo<ProfileViewModel>(new TextMessage(userId.ToString()));
+                    _messageBus.SendTo<TestingViewModel>(new TextMessage(userId.ToString()));
                 }
             }
         }

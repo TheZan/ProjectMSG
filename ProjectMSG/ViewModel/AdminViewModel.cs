@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Text;
+using System.Windows;
 
 namespace ProjectMSG.ViewModel
 {
@@ -34,11 +35,23 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return selectSection ??
-                  (selectSection = new RelayCommand(async obj =>
-                  {
-                      _pageService.ChangePage(new AdminSection());
-                  }));
+                return selectSection ??= new RelayCommand(async obj =>
+                {
+                    _pageService.ChangePage(new AdminSection());
+                });
+            }
+        }
+
+        private RelayCommand relogin;
+
+        public RelayCommand Relogin
+        {
+            get
+            {
+                return relogin ??= new RelayCommand(async obj =>
+                {
+                    _pageService.ChangePage(new Auth());
+                });
             }
         }
 

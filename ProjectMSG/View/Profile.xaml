@@ -72,7 +72,7 @@
             </materialDesign:ColorZone>
         </materialDesign:DrawerHost>
         <StackPanel Grid.Row="1">
-            <TextBlock>Profile</TextBlock>
+            <TextBlock Text="{Binding GetUserId}"></TextBlock>
         </StackPanel>
     </Grid>
 </Page>

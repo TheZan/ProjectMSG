@@ -5,6 +5,7 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:ProjectMSG.View"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+      xmlns:model="clr-namespace:ProjectMSG.Model"
       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
       Background="{DynamicResource MaterialDesignPaper}"
       TextElement.FontWeight="Medium"
@@ -75,8 +76,25 @@
                 </StackPanel>
             </materialDesign:ColorZone>
         </materialDesign:DrawerHost>
-        <StackPanel Grid.Row="1">
-            <TextBlock>Content</TextBlock>
-        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="200"/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+            <Rectangle Grid.Column="0" Fill="#F2F2F2"></Rectangle>
+            <TreeView Grid.Column="0" Margin="5" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Sections}">
+                <TreeView.ItemTemplate>
+                    <HierarchicalDataTemplate ItemsSource="{Binding Article}" DataType="{x:Type Section}">
+                        <TextBlock Text="{Binding SectionName}"/>
+                        <HierarchicalDataTemplate.ItemTemplate>
+                            <HierarchicalDataTemplate DataType="{x:Type model:Article}">
+                                <TextBlock Text="{Binding ArticleName}"/>
+                            </HierarchicalDataTemplate>
+                        </HierarchicalDataTemplate.ItemTemplate>
+                    </HierarchicalDataTemplate>
+                </TreeView.ItemTemplate>
+            </TreeView>
+            <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" Text="{Binding ArticleName, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+        </Grid>
     </Grid>
 </Page>
