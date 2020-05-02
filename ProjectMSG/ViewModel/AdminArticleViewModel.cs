@@ -1,25 +1,22 @@
 ﻿using DevExpress.Mvvm;
 using Microsoft.EntityFrameworkCore;
-using ProjectMSG.Event;
 using ProjectMSG.Message;
 using ProjectMSG.Model;
 using ProjectMSG.Service;
 using ProjectMSG.View;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
 namespace ProjectMSG.ViewModel
 {
-    public class AdminArticelViewModel : BindableBase, INotifyPropertyChanged
+    public class AdminArticleViewModel : BindableBase, INotifyPropertyChanged
     {
-        public AdminArticelViewModel(PageService pageService, EventBus eventBus, MessageBus messageBus)
+        public AdminArticleViewModel(PageService pageService, EventBus eventBus, MessageBus messageBus)
         {
             _pageService = pageService;
             _eventBus = eventBus;
@@ -29,7 +26,7 @@ namespace ProjectMSG.ViewModel
             {
                 GetSectionId = message.Id;
                 GetSetctionName = $"Раздел: {message.Name}";
-                await Task.Run(() => GetArticle());
+                await Task.Run(GetArticle);
             });
         }
 
@@ -145,6 +142,24 @@ namespace ProjectMSG.ViewModel
         #endregion
 
         #region Command
+
+        private RelayCommand goToTest;
+
+        public RelayCommand GoToTest
+        {
+            get
+            {
+                return goToTest ??
+                  (goToTest = new RelayCommand(async obj =>
+                  {
+                      if (SelectArticle != null)
+                      {
+                          _pageService.ChangePage(new AdminTest());
+                          await _messageBus.SendTo<AdminTestViewModel>(new SectionToArticle(ArticleId, ArticleName));
+                      }
+                  }));
+            }
+        }
 
         private RelayCommand back;
 
@@ -269,6 +284,7 @@ namespace ProjectMSG.ViewModel
 
                 var last = db.Article.ToList().Last();
                 int lastArticle = last.ArticleId;
+                string lastArticleName = last.ArticleName;
                 for (int i = 0; i < articlePhotoAdd.Count; i++)
                 {
                     Photo addArticlePhoto = new Photo
@@ -278,6 +294,14 @@ namespace ProjectMSG.ViewModel
                     };
                     db.Photo.Add(addArticlePhoto);
                 }
+                await db.SaveChangesAsync();
+
+                Test addTest = new Test
+                {
+                    TestName = lastArticleName,
+                    ArticleId = lastArticle
+                };
+                await db.Test.AddAsync(addTest);
                 await db.SaveChangesAsync();
 
                 await GetArticle();
@@ -303,7 +327,7 @@ namespace ProjectMSG.ViewModel
         private async Task EditArticle()
         {
 
-            using (MSGCoreContext db = new MSGCoreContext())
+            await using (var db = new MSGCoreContext())
             {
                 var editArticle = await db.Article.Where(p => p.ArticleId == ArticleId).FirstOrDefaultAsync();
                 editArticle.ArticleName = articleNameAdd;

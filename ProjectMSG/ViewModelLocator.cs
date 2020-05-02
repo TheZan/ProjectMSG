@@ -23,7 +23,8 @@ namespace ProjectMSG
             services.AddSingleton<ProfileViewModel>();
             services.AddSingleton<AdminViewModel>();
             services.AddSingleton<AdminSectionViewModel>();
-            services.AddSingleton<AdminArticelViewModel>();
+            services.AddSingleton<AdminArticleViewModel>();
+            services.AddSingleton<AdminTestViewModel>();
 
             services.AddSingleton<PageService>();
             services.AddSingleton<EventBus>();
@@ -47,6 +48,7 @@ namespace ProjectMSG
         public ProfileViewModel ProfileViewModel => _provider.GetRequiredService<ProfileViewModel>();
         public AdminViewModel AdminViewModel => _provider.GetRequiredService<AdminViewModel>();
         public AdminSectionViewModel AdminSectionViewModel => _provider.GetRequiredService<AdminSectionViewModel>();
-        public AdminArticelViewModel AdminArticelViewModel => _provider.GetRequiredService<AdminArticelViewModel>();
+        public AdminArticleViewModel AdminArticleViewModel => _provider.GetRequiredService<AdminArticleViewModel>();
+        public AdminTestViewModel AdminTestViewModel => _provider.GetRequiredService<AdminTestViewModel>();
     }
 }

@@ -12,7 +12,7 @@
       FontFamily="{materialDesign:MaterialDesignFont}"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      DataContext="{Binding AdminArticelViewModel, Source={StaticResource ViewModelLocator}}"
+      DataContext="{Binding AdminArticleViewModel, Source={StaticResource ViewModelLocator}}"
       Title="AdminArticle">
 
     <Grid>
@@ -29,7 +29,12 @@
             <Button Grid.Column="1" Command="{Binding Back}" Content="Назад" Foreground="White" HorizontalAlignment="Right" Margin="10"></Button>
             <TextBlock Text="{Binding GetSetctionName, UpdateSourceTrigger=PropertyChanged}" Margin="10" VerticalAlignment="Center" TextWrapping="Wrap"/>
         </Grid>
-        <ListBox x:Name="listSection" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="10" SelectedItem="{Binding SelectArticle}" ItemsSource="{Binding Articles, UpdateSourceTrigger=PropertyChanged}">
+        <ListBox x:Name="listArticle" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="10" SelectedItem="{Binding SelectArticle}" ItemsSource="{Binding Articles, UpdateSourceTrigger=PropertyChanged}">
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="MouseDoubleClick">
+                    <i:InvokeCommandAction Command="{Binding GoToTest}" CommandParameter="{Binding ElementName=listArticle, Path=SelectedItem}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
             <ListBox.ContextMenu>
                 <ContextMenu>
                     <MenuItem Header="Удалить" Command="{Binding DelArticleCommand}"/>

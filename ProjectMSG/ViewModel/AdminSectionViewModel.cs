@@ -124,7 +124,7 @@ namespace ProjectMSG.ViewModel
                       if (SelectSection != null)
                       {
                           _pageService.ChangePage(new AdminArticle());
-                          await _messageBus.SendTo<AdminArticelViewModel>(new SectionToArticle(SectionId, SectionName));
+                          await _messageBus.SendTo<AdminArticleViewModel>(new SectionToArticle(SectionId, SectionName));
                       }
                   }));
             }

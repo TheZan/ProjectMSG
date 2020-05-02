@@ -1,0 +1,45 @@
+﻿<Window x:Class="ProjectMSG.View.AddQuestionDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:ProjectMSG.View"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        Background="{DynamicResource MaterialDesignPaper}"
+        TextElement.FontWeight="Medium"
+        TextElement.FontSize="14"
+        FontFamily="{materialDesign:MaterialDesignFont}"
+        mc:Ignorable="d"
+        Title="Добавить вопрос" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <StackPanel>
+            <TextBox x:Name="QuestionText" MinWidth="500" MaxWidth="500" Margin="5" materialDesign:HintAssist.Hint="Вопрос" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines" FontSize="18"/>
+            <ListBox x:Name="AnswerList" Margin="5" MinHeight="250" MaxHeight="250" MaxWidth="500">
+                <ListBox.ContextMenu>
+                    <ContextMenu>
+                        <MenuItem Header="Удалить" Command="{Binding DelArticleCommand}"/>
+                    </ContextMenu>
+                </ListBox.ContextMenu>
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Orientation="Horizontal">
+                            <RadioButton IsChecked="{Binding Path=AnswerCorrect, Mode=OneWayToSource}" x:Name="CorrectAnswerCB" Content="{Binding AnswerText}" GroupName="AnswersRb"></RadioButton>
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+            <TextBox x:Name="Answer" MinWidth="350" Margin="5" materialDesign:HintAssist.Hint="Ответ" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines" FontSize="18"/>
+            <Button x:Name="AddAnswer" Click="AddAnswer_OnClick"  Margin="5" Foreground="White" Content="Добавить ответ"></Button>
+        </StackPanel>
+        <WrapPanel Grid.Row="1" HorizontalAlignment="Right" Margin="0,15,0,0">
+            <Button Foreground="White" IsDefault="True" Click="ButtonBase_OnClick"  MinWidth="60" Margin="0,0,10,0">OK</Button>
+            <Button Foreground="White" IsCancel="True" MinWidth="60">Отмена</Button>
+        </WrapPanel>
+    </Grid>
+</Window>

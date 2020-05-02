@@ -65,3 +65,16 @@ C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\Projec
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\ProjectMSG.dll
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\ProjectMSG.pdb
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\ProjectMSG.genruntimeconfig.cache
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\bin\Release\netcoreapp3.1\Microsoft.Xaml.Behaviors.dll
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AddArticleDialog.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AddSectionDialog.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AdminArticle.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AdminSection.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\EditArticleDialog.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\EditSectionDialog.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AddArticleDialog.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AddSectionDialog.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AdminArticle.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AdminSection.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\EditArticleDialog.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\EditSectionDialog.baml
