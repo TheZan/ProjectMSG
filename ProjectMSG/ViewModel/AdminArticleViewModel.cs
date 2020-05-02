@@ -149,15 +149,14 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return goToTest ??
-                  (goToTest = new RelayCommand(async obj =>
-                  {
-                      if (SelectArticle != null)
-                      {
-                          _pageService.ChangePage(new AdminTest());
-                          await _messageBus.SendTo<AdminTestViewModel>(new SectionToArticle(ArticleId, ArticleName));
-                      }
-                  }));
+                return goToTest ??= new RelayCommand(async obj =>
+                {
+                    if (SelectArticle != null)
+                    {
+                        _pageService.ChangePage(new AdminTest());
+                        await _messageBus.SendTo<AdminTestViewModel>(new SectionToArticle(ArticleId, ArticleName));
+                    }
+                });
             }
         }
 
@@ -167,11 +166,10 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return back ??
-                  (back = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new AdminSection());
-                  }));
+                return back ??= new RelayCommand(obj =>
+                {
+                    _pageService.ChangePage(new AdminSection());
+                });
             }
         }
 
@@ -181,19 +179,18 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return addArticle ??
-                  (addArticle = new RelayCommand(async obj =>
-                  {
-                      addArticleDialog = new AddArticleDialog();
-                      if (addArticleDialog.ShowDialog() == true)
-                      {
-                          articleNameAdd = addArticleDialog.ArticleName;
-                          articleTextAdd = addArticleDialog.ArticleText;
-                          articlePhotoAdd = new List<Photo>();
-                          articlePhotoAdd = addArticleDialog.ArticleImage;
-                          await Task.Run(() => AddArticle());
-                      }
-                  }));
+                return addArticle ??= new RelayCommand(async obj =>
+                {
+                    addArticleDialog = new AddArticleDialog();
+                    if (addArticleDialog.ShowDialog() == true)
+                    {
+                        articleNameAdd = addArticleDialog.ArticleName;
+                        articleTextAdd = addArticleDialog.ArticleText;
+                        articlePhotoAdd = new List<Photo>();
+                        articlePhotoAdd = addArticleDialog.ArticleImage;
+                        await Task.Run(AddArticle);
+                    }
+                });
             }
         }
 
@@ -203,25 +200,24 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return delArticle ??
-                  (delArticle = new RelayCommand(async obj =>
-                  {
-                      if (SelectArticle != null)
-                      {
-                          if (MessageBox.Show("Вы действительно хотите удалить статью?", "Удаление статьи", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
-                          {
-                              return;
-                          }
-                          else
-                          {
-                              await Task.Run(() => DelArticle());
-                          }
-                      }
-                      else
-                      {
-                          MessageBox.Show("Выберите статью для удаления!", "Удаление статьи", MessageBoxButton.OK, MessageBoxImage.Warning);
-                      }
-                  }));
+                return delArticle ??= new RelayCommand(async obj =>
+                {
+                    if (SelectArticle != null)
+                    {
+                        if (MessageBox.Show("Вы действительно хотите удалить статью?", "Удаление статьи", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            await Task.Run(DelArticle);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Выберите статью для удаления!", "Удаление статьи", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                });
             }
         }
 
@@ -231,28 +227,27 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return editArticle ??
-                  (editArticle = new RelayCommand(async obj =>
-                  {
-                      if (SelectArticle != null)
-                      {
-                          articlePhotoDel = new List<Photo>();
-                          await Task.Run(() => GetPhoto());
-                          editArticleDialog = new EditArticleDialog(ArticleName, ArticleText, articlePhotoAdd);
-                          if (editArticleDialog.ShowDialog() == true)
-                          {
-                              articleNameAdd = editArticleDialog.ArticleName;
-                              articleTextAdd = editArticleDialog.ArticleText;
-                              articlePhotoAdd = new List<Photo>();
-                              articlePhotoAdd = editArticleDialog.ArticleImage;
-                              await Task.Run(() => EditArticle());
-                          }
-                      }
-                      else
-                      {
-                          MessageBox.Show("Выберите раздел для редактирования!", "Редактирование раздела", MessageBoxButton.OK, MessageBoxImage.Warning);
-                      }
-                  }));
+                return editArticle ??= new RelayCommand(async obj =>
+                {
+                    if (SelectArticle != null)
+                    {
+                        articlePhotoDel = new List<Photo>();
+                        await Task.Run(GetPhoto);
+                        editArticleDialog = new EditArticleDialog(ArticleName, ArticleText, articlePhotoAdd);
+                        if (editArticleDialog.ShowDialog() == true)
+                        {
+                            articleNameAdd = editArticleDialog.ArticleName;
+                            articleTextAdd = editArticleDialog.ArticleText;
+                            articlePhotoAdd = new List<Photo>();
+                            articlePhotoAdd = editArticleDialog.ArticleImage;
+                            await Task.Run(EditArticle);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Выберите раздел для редактирования!", "Редактирование раздела", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                });
             }
         }
 
@@ -262,7 +257,7 @@ namespace ProjectMSG.ViewModel
 
         private async Task GetArticle()
         {
-            using (MSGCoreContext db = new MSGCoreContext())
+            await using (MSGCoreContext db = new MSGCoreContext())
             {
                 Articles = await db.Article.Where(p => p.SectionId == GetSectionId).ToListAsync();
             }
@@ -271,7 +266,7 @@ namespace ProjectMSG.ViewModel
         private async Task AddArticle()
         {
 
-            using (MSGCoreContext db = new MSGCoreContext())
+            await using(MSGCoreContext db = new MSGCoreContext())
             {
                 Article add = new Article
                 {
@@ -310,7 +305,7 @@ namespace ProjectMSG.ViewModel
 
         private async Task DelArticle()
         {
-            using (MSGCoreContext db = new MSGCoreContext())
+            await using (MSGCoreContext db = new MSGCoreContext())
             {
                 Article del = new Article
                 {
@@ -355,7 +350,7 @@ namespace ProjectMSG.ViewModel
 
         private async Task GetPhoto()
         {
-            using (MSGCoreContext db = new MSGCoreContext())
+            await using (MSGCoreContext db = new MSGCoreContext())
             {
                 articlePhotoAdd = await db.Photo.Where(p => p.ArticleId == ArticleId).ToListAsync();
                 articlePhotoDel = await db.Photo.Where(p => p.ArticleId == ArticleId).ToListAsync();

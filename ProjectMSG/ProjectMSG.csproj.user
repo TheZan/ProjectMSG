@@ -39,6 +39,9 @@
     <Compile Update="View\EditArticleDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\EditQuestionDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\EditSectionDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -81,6 +84,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\EditArticleDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\EditQuestionDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\EditSectionDialog.xaml">

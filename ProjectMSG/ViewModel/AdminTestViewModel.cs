@@ -41,6 +41,7 @@ namespace ProjectMSG.ViewModel
         private readonly MessageBus _messageBus;
 
         private AddQuestionDialog addQuestionDialog;
+        private EditQuestionDialog editQuestionDialog;
 
         private int getArticleId;
         private string getArticleName;
@@ -114,6 +115,9 @@ namespace ProjectMSG.ViewModel
         private string questionTextGet;
         private List<AnswerListClass> questionAnswer;
         private int testId;
+        private string questionText;
+        private List<Answer> listAnswers;
+        private List<CorrectAnswer> correctAnswers;
 
         #endregion
 
@@ -152,59 +156,62 @@ namespace ProjectMSG.ViewModel
             }
         }
 
-        //private RelayCommand delSection;
+        private RelayCommand delQuestion;
 
-        //public RelayCommand DelSectionCommand
-        //{
-        //    get
-        //    {
-        //        return delSection ??
-        //          (delSection = new RelayCommand(async obj =>
-        //          {
-        //              if (SelectSection != null)
-        //              {
-        //                  if (MessageBox.Show("Вы действительно хотите удалить раздел?", "Удаление раздела", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
-        //                  {
-        //                      return;
-        //                  }
-        //                  else
-        //                  {
-        //                      await Task.Run(() => DelSection());
-        //                  }
-        //              }
-        //              else
-        //              {
-        //                  MessageBox.Show("Выберите раздел для удаления!", "Удаление раздела", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //              }
-        //          }));
-        //    }
-        //}
+        public RelayCommand DelQuestionCommand
+        {
+            get
+            {
+                return delQuestion ??= new RelayCommand(async obj =>
+                {
+                    if (SelectQuestion != null)
+                    {
+                        if (MessageBox.Show("Вы действительно хотите удалить вопрос?", "Удаление вопроса", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            await Task.Run(DelQuestion);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Выберите вопрос для удаления!", "Удаление вопроса", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                });
+            }
+        }
 
-        //private RelayCommand editSection;
+        private RelayCommand editQuestion;
 
-        //public RelayCommand EditSectionCommand
-        //{
-        //    get
-        //    {
-        //        return editSection ??
-        //          (editSection = new RelayCommand(async obj =>
-        //          {
-        //              if (SelectSection != null)
-        //              {
-        //                  editSectionDialog = new EditSectionDialog(SectionName);
-        //                  if (editSectionDialog.ShowDialog() == true)
-        //                  {
-        //                      sectionNameEdit = editSectionDialog.GetSectionName;
-        //                      await Task.Run(() => EditSection());
-        //                  }
-        //              }
-        //              else
-        //              {
-        //                  MessageBox.Show("Выберите раздел для редактирования!", "Редактирование раздела", MessageBoxButton.OK, MessageBoxImage.Warning);
-        //              }
-        //          }));
-        //    }
-        //}
+        public RelayCommand EditQuestionCommand
+        {
+            get
+            {
+                return editQuestion ??= new RelayCommand(async obj =>
+                {
+                    if (SelectQuestion != null)
+                    {
+                        correctAnswers = new List<CorrectAnswer>();
+                        listAnswers = new List<Answer>();
+                        await Task.Run(GetAnswerAndCorrect);
+                        editQuestionDialog = new EditQuestionDialog(listAnswers, correctAnswers, QuestionText);
+                        if (editQuestionDialog.ShowDialog() == true)
+                        {
+                            questionAnswer = new List<AnswerListClass>();
+                            questionAnswer = editQuestionDialog.GetAnswer;
+                            questionTextGet = editQuestionDialog.GetQuestionText;
+                            await Task.Run(EditQuestion);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Выберите вопрос для редактирования!", "Редактирование вопроса", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                });
+            }
+        }
 
         #endregion
 
@@ -269,34 +276,83 @@ namespace ProjectMSG.ViewModel
             }
         }
 
-        //private async Task DelSection()
-        //{
-        //    using (MSGCoreContext db = new MSGCoreContext())
-        //    {
-        //        Section del = new Section
-        //        {
-        //            SectionId = SectionId
-        //        };
-        //        db.Section.Attach(del);
-        //        db.Section.Remove(del);
-        //        await db.SaveChangesAsync();
-        //        await GetSection();
-        //    }
-        //    SelectSection = null;
-        //}
+        private async Task DelQuestion()
+        {
+            await using (MSGCoreContext db = new MSGCoreContext())
+            {
+                Question del = new Question
+                {
+                    QuestionId = QuestionId
+                };
+                db.Question.Attach(del);
+                db.Question.Remove(del);
+                await db.SaveChangesAsync();
+                await GetQuestion();
+            }
+            SelectQuestion = null;
+        }
 
-        //private async Task EditSection()
-        //{
+        private async Task EditQuestion()
+        {
 
-        //    using (MSGCoreContext db = new MSGCoreContext())
-        //    {
-        //        var editSection = await db.Section.Where(p => p.SectionId == SectionId).FirstOrDefaultAsync();
-        //        editSection.SectionName = sectionNameEdit;
-        //        await db.SaveChangesAsync();
-        //        await GetSection();
-        //    }
-        //    SelectSection = null;
-        //}
+            await using (var db = new MSGCoreContext())
+            {
+                var editQuestion = await db.Question.Where(p => p.QuestionId == QuestionId).FirstOrDefaultAsync();
+                editQuestion.QuestionText = questionTextGet;
+                await db.SaveChangesAsync();
+
+                db.CorrectAnswer.RemoveRange(correctAnswers);
+                await db.SaveChangesAsync();
+
+                db.Answer.RemoveRange(listAnswers);
+                await db.SaveChangesAsync();
+
+                var lastQuestion = db.Question.ToList().Last();
+                int lastId = lastQuestion.QuestionId;
+                foreach (var t in questionAnswer)
+                {
+                    Answer addAnswer = new Answer
+                    {
+                        AnswerText = t.AnswerText,
+                        QuestionId = lastId
+                    };
+                    db.Answer.Add(addAnswer);
+                }
+                await db.SaveChangesAsync();
+
+                string correctText = "";
+                foreach (var correct in questionAnswer)
+                {
+                    if (correct.AnswerCorrect == true)
+                    {
+                        correctText = correct.AnswerText;
+                    }
+                }
+
+                var correctId = await db.Answer.Where(p => p.AnswerText == correctText).Select(p => p.AnswerId)
+                    .FirstOrDefaultAsync();
+
+                CorrectAnswer addCorrectAnswer = new CorrectAnswer
+                {
+                    AnswerId = correctId,
+                    QuestionId = lastId
+                };
+                await db.CorrectAnswer.AddAsync(addCorrectAnswer);
+                await db.SaveChangesAsync();
+
+                await GetQuestion();
+            }
+            SelectQuestion = null;
+        }
+
+        private async Task GetAnswerAndCorrect()
+        {
+            await using (MSGCoreContext db = new MSGCoreContext())
+            {
+                listAnswers = await db.Answer.Where(p => p.QuestionId == QuestionId).ToListAsync();
+                correctAnswers = await db.CorrectAnswer.Where(p => p.QuestionId == QuestionId).ToListAsync();
+            }
+        }
 
         #endregion
 

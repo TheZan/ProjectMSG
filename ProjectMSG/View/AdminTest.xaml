@@ -30,15 +30,10 @@
             <TextBlock Text="{Binding GetArticleName, UpdateSourceTrigger=PropertyChanged}" Margin="10" VerticalAlignment="Center" TextWrapping="Wrap"/>
         </Grid>
         <ListBox x:Name="ListQuestion" Grid.Row="1" ScrollViewer.VerticalScrollBarVisibility="Auto" Margin="10" SelectedItem="{Binding SelectQuestion}" ItemsSource="{Binding Questions, UpdateSourceTrigger=PropertyChanged}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="MouseDoubleClick">
-                    <i:InvokeCommandAction Command="{Binding GoToArticle}" CommandParameter="{Binding ElementName=ListQuestion, Path=SelectedItem}"/>
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
             <ListBox.ContextMenu>
                 <ContextMenu>
-                    <MenuItem Header="Удалить" Command="{Binding DelSectionCommand}"/>
-                    <MenuItem Header="Изменить" Command="{Binding EditSectionCommand}"/>
+                    <MenuItem Header="Удалить" Command="{Binding DelQuestionCommand}"/>
+                    <MenuItem Header="Изменить" Command="{Binding EditQuestionCommand}"/>
                 </ContextMenu>
             </ListBox.ContextMenu>
             <ListBox.ItemTemplate>

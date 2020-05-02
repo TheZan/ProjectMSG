@@ -10,20 +10,49 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using ProjectMSG.Model;
 
 namespace ProjectMSG.View
 {
     /// <summary>
-    /// Логика взаимодействия для AddQuestionDialog.xaml
+    /// Логика взаимодействия для EditQuestionDialog.xaml
     /// </summary>
-    public partial class AddQuestionDialog : Window
+    public partial class EditQuestionDialog : Window
     {
-        private List<AnswerListClass> answerListCorrect = new List<AnswerListClass>();
+        private List<AddQuestionDialog.AnswerListClass> answerListCorrect = new List<AddQuestionDialog.AnswerListClass>();
         private int answerListId = 0;
+        private List<Answer> answers = new List<Answer>();
+        private List<CorrectAnswer> correctAnswers = new List<CorrectAnswer>();
 
-        public AddQuestionDialog()
+        public EditQuestionDialog(List<Answer> answers, List<CorrectAnswer> correctAnswers, string answerTxt)
         {
             InitializeComponent();
+            this.answers = answers;
+            this.correctAnswers = correctAnswers;
+            QuestionText.Text = answerTxt;
+
+            foreach (var answer in this.answers)
+            {
+                if (answer.AnswerId == correctAnswers.Select(p => p.AnswerId).FirstOrDefault())
+                {
+                    answerListCorrect.Add(new AddQuestionDialog.AnswerListClass()
+                    {
+                        AnswerText = answer.AnswerText,
+                        AnswerId = answerListId++,
+                        AnswerCorrect = true
+                    });
+                }
+                else
+                {
+                    answerListCorrect.Add(new AddQuestionDialog.AnswerListClass()
+                    {
+                        AnswerText = answer.AnswerText,
+                        AnswerId = answerListId++
+                    });
+                }
+            }
+
+            AnswerList.ItemsSource = answerListCorrect;
         }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
@@ -53,7 +82,7 @@ namespace ProjectMSG.View
             get { return QuestionText.Text; }
         }
 
-        public List<AnswerListClass> GetAnswer
+        public List<AddQuestionDialog.AnswerListClass> GetAnswer
         {
             get { return answerListCorrect; }
         }
@@ -62,7 +91,7 @@ namespace ProjectMSG.View
         {
             if (Answer.Text != "")
             {
-                answerListCorrect.Add(new AnswerListClass()
+                answerListCorrect.Add(new AddQuestionDialog.AnswerListClass()
                 {
                     AnswerText = Answer.Text,
                     AnswerId = answerListId++
@@ -85,20 +114,13 @@ namespace ProjectMSG.View
             ListBoxItem lbi = sender as ListBoxItem;
             if (lbi != null)
             {
-                AnswerListClass fam = lbi.DataContext as AnswerListClass;
+                AddQuestionDialog.AnswerListClass fam = lbi.DataContext as AddQuestionDialog.AnswerListClass;
                 if (fam != null)
                 {
                     int answerId = fam.AnswerId;
                     answerListId = answerId;
                 }
             }
-        }
-
-        public class AnswerListClass
-        {
-            public int AnswerId { get; set; }
-            public string AnswerText { get; set; }
-            public bool AnswerCorrect { get; set; }
         }
     }
 }
