@@ -17,7 +17,6 @@ namespace ProjectMSG.Model
 
         public virtual DbSet<Answer> Answer { get; set; }
         public virtual DbSet<Article> Article { get; set; }
-        public virtual DbSet<Badge> Badge { get; set; }
         public virtual DbSet<CorrectAnswer> CorrectAnswer { get; set; }
         public virtual DbSet<Photo> Photo { get; set; }
         public virtual DbSet<Question> Question { get; set; }
@@ -75,28 +74,6 @@ namespace ProjectMSG.Model
                     .WithMany(p => p.Article)
                     .HasForeignKey(d => d.SectionId)
                     .HasConstraintName("FK_article_section");
-            });
-
-            modelBuilder.Entity<Badge>(entity =>
-            {
-                entity.ToTable("badge");
-
-                entity.Property(e => e.BadgeId).HasColumnName("badgeId");
-
-                entity.Property(e => e.BadgeImage)
-                    .IsRequired()
-                    .HasColumnName("badgeImage");
-
-                entity.Property(e => e.BadgeName)
-                    .IsRequired()
-                    .HasColumnName("badgeName");
-
-                entity.Property(e => e.TestId).HasColumnName("testId");
-
-                entity.HasOne(d => d.Test)
-                    .WithMany(p => p.Badge)
-                    .HasForeignKey(d => d.TestId)
-                    .HasConstraintName("FK_badge_badge");
             });
 
             modelBuilder.Entity<CorrectAnswer>(entity =>
@@ -165,14 +142,16 @@ namespace ProjectMSG.Model
 
                 entity.Property(e => e.ResultId).HasColumnName("resultId");
 
-                entity.Property(e => e.BadgeId).HasColumnName("badgeId");
+                entity.Property(e => e.CountCorrect).HasColumnName("countCorrect");
+
+                entity.Property(e => e.TestId).HasColumnName("testId");
 
                 entity.Property(e => e.UserId).HasColumnName("userId");
 
-                entity.HasOne(d => d.Badge)
+                entity.HasOne(d => d.Test)
                     .WithMany(p => p.Result)
-                    .HasForeignKey(d => d.BadgeId)
-                    .HasConstraintName("FK_result_badge");
+                    .HasForeignKey(d => d.TestId)
+                    .HasConstraintName("FK_result_test");
 
                 entity.HasOne(d => d.User)
                     .WithMany(p => p.Result)

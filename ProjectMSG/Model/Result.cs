@@ -7,9 +7,10 @@ namespace ProjectMSG.Model
     {
         public int ResultId { get; set; }
         public int UserId { get; set; }
-        public int BadgeId { get; set; }
+        public int TestId { get; set; }
+        public int CountCorrect { get; set; }
 
-        public virtual Badge Badge { get; set; }
+        public virtual Test Test { get; set; }
         public virtual Users User { get; set; }
     }
 }

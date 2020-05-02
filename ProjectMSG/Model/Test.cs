@@ -7,8 +7,8 @@ namespace ProjectMSG.Model
     {
         public Test()
         {
-            Badge = new HashSet<Badge>();
             Question = new HashSet<Question>();
+            Result = new HashSet<Result>();
         }
 
         public int TestId { get; set; }
@@ -16,7 +16,7 @@ namespace ProjectMSG.Model
         public int ArticleId { get; set; }
 
         public virtual Article Article { get; set; }
-        public virtual ICollection<Badge> Badge { get; set; }
         public virtual ICollection<Question> Question { get; set; }
+        public virtual ICollection<Result> Result { get; set; }
     }
 }
