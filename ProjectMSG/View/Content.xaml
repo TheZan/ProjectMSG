@@ -6,6 +6,8 @@
       xmlns:local="clr-namespace:ProjectMSG.View"
       xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
       xmlns:model="clr-namespace:ProjectMSG.Model"
+      xmlns:projectMsg="clr-namespace:ProjectMSG"
+      xmlns:b="http://schemas.microsoft.com/xaml/behaviors"
       TextElement.Foreground="{DynamicResource MaterialDesignBody}"
       Background="{DynamicResource MaterialDesignPaper}"
       TextElement.FontWeight="Medium"
@@ -15,10 +17,6 @@
       d:DesignHeight="450" d:DesignWidth="800"
       DataContext="{Binding ContentViewModel, Source={StaticResource ViewModelLocator}}"
       Title="Content">
-
-    <Page.Resources>
-        <BooleanToVisibilityConverter x:Key="IsAdmin" />
-    </Page.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -83,18 +81,57 @@
             </Grid.ColumnDefinitions>
             <Rectangle Grid.Column="0" Fill="#F2F2F2"></Rectangle>
             <TreeView Grid.Column="0" Margin="5" ScrollViewer.VerticalScrollBarVisibility="Auto" ScrollViewer.HorizontalScrollBarVisibility="Disabled" ItemsSource="{Binding Sections}">
+                <b:Interaction.Behaviors>
+                <projectMsg:BindableSelectedItemBehavior SelectedItem="{Binding SelectArticle, Mode=TwoWay}" />
+                </b:Interaction.Behaviors>
                 <TreeView.ItemTemplate>
                     <HierarchicalDataTemplate ItemsSource="{Binding Article}" DataType="{x:Type Section}">
-                        <TextBlock Text="{Binding SectionName}"/>
+                        <TextBlock TextWrapping="Wrap" Text="{Binding SectionName}"/>
                         <HierarchicalDataTemplate.ItemTemplate>
                             <HierarchicalDataTemplate DataType="{x:Type model:Article}">
-                                <TextBlock Text="{Binding ArticleName}"/>
+                                <TextBlock TextWrapping="Wrap" Text="{Binding ArticleName}"/>
                             </HierarchicalDataTemplate>
                         </HierarchicalDataTemplate.ItemTemplate>
                     </HierarchicalDataTemplate>
                 </TreeView.ItemTemplate>
             </TreeView>
-            <TextBlock Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" FontSize="25" Text="{Binding ArticleName, UpdateSourceTrigger=PropertyChanged}"></TextBlock>
+            <FlowDocumentReader Grid.Column="1">
+                <FlowDocument>
+                    <Paragraph TextAlignment="Center">
+                        <Run Foreground="Black" FontWeight="Bold" FontSize="20"  Text="{Binding ArticleName, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Paragraph>
+                    <Paragraph>
+                        <Run Foreground="Black" Text="{Binding ArticleText, UpdateSourceTrigger=PropertyChanged}"/>
+                    </Paragraph>
+                    <Paragraph TextAlignment="Center">
+                        <ListView VerticalAlignment="Center" HorizontalAlignment="Center" ItemsSource="{Binding Photos, UpdateSourceTrigger=PropertyChanged}" ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+                            <ListView.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <StackPanel></StackPanel>
+                                </ItemsPanelTemplate>
+                            </ListView.ItemsPanel>
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <StackPanel MaxHeight="200" MaxWidth="500" MinHeight="100" MinWidth="100">
+                                        <Image Margin="5" Stretch="UniformToFill" Source="{Binding ArticlePhoto, UpdateSourceTrigger=PropertyChanged}"/>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                                <ContentPresenter />
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                        </ListView>
+                    </Paragraph>
+                </FlowDocument>
+            </FlowDocumentReader>
         </Grid>
     </Grid>
 </Page>

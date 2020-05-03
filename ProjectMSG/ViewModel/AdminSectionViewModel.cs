@@ -153,25 +153,24 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return delSection ??
-                  (delSection = new RelayCommand(async obj =>
-                  {
-                      if (SelectSection != null)
-                      {
-                          if (MessageBox.Show("Вы действительно хотите удалить раздел?", "Удаление раздела", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
-                          {
-                              return;
-                          }
-                          else
-                          {
-                              await Task.Run(() => DelSection());
-                          }
-                      }
-                      else
-                      {
-                          MessageBox.Show("Выберите раздел для удаления!", "Удаление раздела", MessageBoxButton.OK, MessageBoxImage.Warning);
-                      }
-                  }));
+                return delSection ??= new RelayCommand(async obj =>
+                {
+                    if (SelectSection != null)
+                    {
+                        if (MessageBox.Show("Вы действительно хотите удалить раздел?", "Удаление раздела", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
+                        {
+                            return;
+                        }
+                        else
+                        {
+                            await Task.Run(DelSection);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Выберите раздел для удаления!", "Удаление раздела", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                });
             }
         }
 

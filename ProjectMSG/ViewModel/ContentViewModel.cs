@@ -57,7 +57,6 @@ namespace ProjectMSG.ViewModel
         }
 
         private Article selectArticle = new Article();
-
         public Article SelectArticle
         {
             get { return selectArticle; }
@@ -85,7 +84,14 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return SelectArticle.ArticleName;
+                if (selectArticle.ArticleId == 0)
+                {
+                    return Articles.Select(p => p.ArticleName).FirstOrDefault();
+                }
+                else
+                {
+                    return SelectArticle.ArticleName;
+                }
             }
             set
             {
@@ -98,7 +104,14 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return SelectArticle.ArticleText;
+                if (selectArticle.ArticleId == 0)
+                {
+                    return Articles.Select(p => p.ArticleText).FirstOrDefault();
+                }
+                else
+                {
+                    return SelectArticle.ArticleText;
+                }
             }
             set
             {
@@ -106,6 +119,18 @@ namespace ProjectMSG.ViewModel
                 NotifyPropertyChanged("ArticleText");
             }
         }
+
+        public ICollection<Photo> Photos
+        {
+            get { return SelectArticle.Photo; }
+            set
+            {
+                SelectArticle.Photo = value;
+                NotifyPropertyChanged("Photos");
+            }
+        }
+
+        private ICollection<Photo> PhotosMain = new List<Photo>();
 
         private List<Section> sections = new List<Section>();
 
@@ -190,6 +215,9 @@ namespace ProjectMSG.ViewModel
             {
                 Sections = await db.Section.ToListAsync();
                 Articles = await db.Article.ToListAsync();
+                PhotosMain = await db.Photo.ToListAsync();
+                int firstArticleId = Articles.Select(p => p.ArticleId).FirstOrDefault();
+                Photos = await db.Photo.Where(p => p.ArticleId == firstArticleId).ToListAsync();
             }
         }
 

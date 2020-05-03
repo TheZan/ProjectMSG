@@ -12,7 +12,7 @@
         FontFamily="{materialDesign:MaterialDesignFont}"
         mc:Ignorable="d"
         MinHeight="400"
-        MinWidth="400"
+        MinWidth="650"
         DataContext="{Binding MainViewModel, Source={StaticResource ViewModelLocator}}"
         Title="Мультимедийное учебное пособие" Height="450" Width="800" WindowStartupLocation="CenterScreen">
     <Window.Resources>
