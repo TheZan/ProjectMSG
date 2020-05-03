@@ -33,34 +33,28 @@
                         CommandParameter="{x:Static Dock.Left}"/>
                     <ListBox Margin="10">
                         <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Home"/>
-                                <TextBlock Margin="10,0,0,0" Text="Главная">
-                                    <TextBlock.InputBindings>
-                                        <MouseBinding Gesture="LeftClick" Command="{Binding SelectContent}"/>
-                                    </TextBlock.InputBindings>
-                                </TextBlock>
-                            </StackPanel>
+                            <Button HorizontalContentAlignment="Left" Width="174" Background="Transparent" BorderBrush="Transparent" Command="{Binding SelectContent}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Home"/>
+                                    <TextBlock Margin="10,0,0,0" Text="Главная"/>
+                                </StackPanel>
+                            </Button>
                         </ListBoxItem>
                         <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Pencil"/>
-                                <TextBlock Margin="10,0,0,0" Text="Тесты">
-                                    <TextBlock.InputBindings>
-                                        <MouseBinding Gesture="LeftClick" Command="{Binding SelectTesting}"/>
-                                    </TextBlock.InputBindings>
-                                </TextBlock>
-                            </StackPanel>
+                            <Button HorizontalContentAlignment="Left" Width="174" Background="Transparent" BorderBrush="Transparent" Command="{Binding SelectTesting}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Pencil"/>
+                                    <TextBlock Margin="10,0,0,0" Text="Тесты"/>
+                                </StackPanel>
+                            </Button>
                         </ListBoxItem>
                         <ListBoxItem>
-                            <StackPanel Orientation="Horizontal">
-                                <materialDesign:PackIcon Kind="Account"/>
-                                <TextBlock Margin="10,0,0,0" Text="Профиль">
-                                    <TextBlock.InputBindings>
-                                        <MouseBinding Gesture="LeftClick" Command="{Binding SelectProfile}"/>
-                                    </TextBlock.InputBindings>
-                                </TextBlock>
-                            </StackPanel>
+                            <Button HorizontalContentAlignment="Left" Width="174" Background="Transparent" BorderBrush="Transparent" Command="{Binding SelectProfile}">
+                                <StackPanel Orientation="Horizontal">
+                                    <materialDesign:PackIcon Kind="Account"/>
+                                    <TextBlock Margin="10,0,0,0" Text="Профиль"/>
+                                </StackPanel>
+                            </Button>
                         </ListBoxItem>
                     </ListBox>
                 </StackPanel>
