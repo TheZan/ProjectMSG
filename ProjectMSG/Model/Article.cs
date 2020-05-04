@@ -1,5 +1,4 @@
-﻿using ProjectMSG.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 
 namespace ProjectMSG.Model
@@ -20,10 +19,5 @@ namespace ProjectMSG.Model
         public virtual Section Section { get; set; }
         public virtual ICollection<Photo> Photo { get; set; }
         public virtual ICollection<Test> Test { get; set; }
-
-        public static implicit operator Article(ContentViewModel v)
-        {
-            throw new NotImplementedException();
-        }
     }
 }

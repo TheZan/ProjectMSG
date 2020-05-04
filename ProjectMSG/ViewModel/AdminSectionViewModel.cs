@@ -1,28 +1,23 @@
-﻿using DevExpress.Mvvm;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows;
+using DevExpress.Mvvm;
 using Microsoft.EntityFrameworkCore;
-using ProjectMSG.Event;
 using ProjectMSG.Message;
 using ProjectMSG.Model;
 using ProjectMSG.Service;
 using ProjectMSG.View;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 
 namespace ProjectMSG.ViewModel
 {
     public class AdminSectionViewModel : BindableBase, INotifyPropertyChanged
     {
-        public AdminSectionViewModel(PageService pageService, EventBus eventBus, MessageBus messageBus)
+        public AdminSectionViewModel(PageService pageService, MessageBus messageBus)
         {
             _pageService = pageService;
-            _eventBus = eventBus;
             _messageBus = messageBus;
 
             Task.Run(GetSection);
@@ -31,66 +26,55 @@ namespace ProjectMSG.ViewModel
         #region Properties
 
         private readonly PageService _pageService;
-        private readonly EventBus _eventBus;
         private readonly MessageBus _messageBus;
 
-        AddSectionDialog addSectionDialog;
-        EditSectionDialog editSectionDialog;
+        private AddSectionDialog addSectionDialog;
+        private EditSectionDialog editSectionDialog;
 
         private string sectionNameAdd;
         private string sectionNameEdit;
 
         private Section selectSection = new Section();
+
         public Section SelectSection
         {
-            get
-            {
-                return selectSection;
-            }
+            get => selectSection;
             set
             {
                 selectSection = value;
-                NotifyPropertyChanged("SelectSection");
+                NotifyPropertyChanged();
             }
         }
 
         public int SectionId
         {
-            get
-            {
-                return SelectSection.SectionId;
-            }
+            get => SelectSection.SectionId;
             set
             {
                 SelectSection.SectionId = value;
-                NotifyPropertyChanged("SectionId");
+                NotifyPropertyChanged();
             }
         }
 
         public string SectionName
         {
-            get
-            {
-                return SelectSection.SectionName;
-            }
+            get => SelectSection.SectionName;
             set
             {
                 SelectSection.SectionName = value;
-                NotifyPropertyChanged("SectionName");
+                NotifyPropertyChanged();
             }
         }
 
         private List<Section> sections;
+
         public List<Section> Sections
         {
-            get
-            {
-                return sections;
-            }
+            get => sections;
             set
             {
                 sections = value;
-                NotifyPropertyChanged("Sections");
+                NotifyPropertyChanged();
             }
         }
 
@@ -102,13 +86,7 @@ namespace ProjectMSG.ViewModel
 
         public RelayCommand Back
         {
-            get
-            {
-                return back ??= new RelayCommand(obj =>
-                {
-                    _pageService.ChangePage(new Admin());
-                });
-            }
+            get { return back ??= new RelayCommand(obj => { _pageService.ChangePage(new Admin()); }); }
         }
 
         private RelayCommand goToArticle;
@@ -134,16 +112,15 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return addSection ??
-                  (addSection = new RelayCommand(async obj =>
-                  {
-                      addSectionDialog = new AddSectionDialog();
-                      if (addSectionDialog.ShowDialog() == true)
-                      {
-                          sectionNameAdd = addSectionDialog.GetSectionName;
-                          await Task.Run(() => AddSection());
-                      }
-                  }));
+                return addSection ??= new RelayCommand(async obj =>
+                {
+                    addSectionDialog = new AddSectionDialog();
+                    if (addSectionDialog.ShowDialog() == true)
+                    {
+                        sectionNameAdd = addSectionDialog.GetSectionName;
+                        await Task.Run(AddSection);
+                    }
+                });
             }
         }
 
@@ -157,18 +134,15 @@ namespace ProjectMSG.ViewModel
                 {
                     if (SelectSection != null)
                     {
-                        if (MessageBox.Show("Вы действительно хотите удалить раздел?", "Удаление раздела", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
-                        {
+                        if (MessageBox.Show("Вы действительно хотите удалить раздел?", "Удаление раздела",
+                            MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                             return;
-                        }
-                        else
-                        {
-                            await Task.Run(DelSection);
-                        }
+                        await Task.Run(DelSection);
                     }
                     else
                     {
-                        MessageBox.Show("Выберите раздел для удаления!", "Удаление раздела", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("Выберите раздел для удаления!", "Удаление раздела", MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
                     }
                 });
             }
@@ -180,23 +154,23 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return editSection ??
-                  (editSection = new RelayCommand(async obj =>
-                  {
-                      if(SelectSection != null)
-                      {
-                          editSectionDialog = new EditSectionDialog(SectionName);
-                          if (editSectionDialog.ShowDialog() == true)
-                          {
-                              sectionNameEdit = editSectionDialog.GetSectionName;
-                              await Task.Run(() => EditSection());
-                          }
-                      }
-                      else
-                      {
-                          MessageBox.Show("Выберите раздел для редактирования!", "Редактирование раздела", MessageBoxButton.OK, MessageBoxImage.Warning);
-                      }
-                  }));
+                return editSection ??= new RelayCommand(async obj =>
+                {
+                    if (SelectSection != null)
+                    {
+                        editSectionDialog = new EditSectionDialog(SectionName);
+                        if (editSectionDialog.ShowDialog() == true)
+                        {
+                            sectionNameEdit = editSectionDialog.GetSectionName;
+                            await Task.Run(EditSection);
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Выберите раздел для редактирования!", "Редактирование раздела",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                });
             }
         }
 
@@ -206,7 +180,7 @@ namespace ProjectMSG.ViewModel
 
         private async Task GetSection()
         {
-            using (MSGCoreContext db = new MSGCoreContext())
+            await using (var db = new MSGCoreContext())
             {
                 Sections = await db.Section.ToListAsync();
             }
@@ -214,10 +188,9 @@ namespace ProjectMSG.ViewModel
 
         private async Task AddSection()
         {
-
-            using (MSGCoreContext db = new MSGCoreContext())
+            await using (MSGCoreContext db = new MSGCoreContext())
             {
-                Section add = new Section
+                var add = new Section
                 {
                     SectionName = sectionNameAdd
                 };
@@ -229,9 +202,9 @@ namespace ProjectMSG.ViewModel
 
         private async Task DelSection()
         {
-            using (MSGCoreContext db = new MSGCoreContext())
+            await using (var db = new MSGCoreContext())
             {
-                Section del = new Section
+                var del = new Section
                 {
                     SectionId = SectionId
                 };
@@ -240,19 +213,20 @@ namespace ProjectMSG.ViewModel
                 await db.SaveChangesAsync();
                 await GetSection();
             }
+
             SelectSection = null;
         }
 
         private async Task EditSection()
         {
-
-            using (MSGCoreContext db = new MSGCoreContext())
+            await using (var db = new MSGCoreContext())
             {
                 var editSection = await db.Section.Where(p => p.SectionId == SectionId).FirstOrDefaultAsync();
                 editSection.SectionName = sectionNameEdit;
                 await db.SaveChangesAsync();
                 await GetSection();
             }
+
             SelectSection = null;
         }
 
@@ -261,7 +235,8 @@ namespace ProjectMSG.ViewModel
         #region ProperyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

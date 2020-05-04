@@ -11,16 +11,19 @@
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="Изменить раздел" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Изменить раздел" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="sectionName" MinWidth="250" Margin="5" materialDesign:HintAssist.Hint="Название раздела" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines" FontSize="18"/>
+        <TextBox x:Name="sectionName" MinWidth="250" Margin="5" materialDesign:HintAssist.Hint="Название раздела"
+                 Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines"
+                 FontSize="18" />
         <WrapPanel Grid.Row="1" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button Foreground="White" IsDefault="True" Click="Button_Click"  MinWidth="60" Margin="0,0,10,0">OK</Button>
+            <Button Foreground="White" IsDefault="True" Click="Button_Click" MinWidth="60" Margin="0,0,10,0">OK</Button>
             <Button Foreground="White" IsCancel="True" MinWidth="60">Отмена</Button>
         </WrapPanel>
     </Grid>

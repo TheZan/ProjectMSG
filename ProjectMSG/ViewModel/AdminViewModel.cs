@@ -1,28 +1,21 @@
-﻿using DevExpress.Mvvm;
-using ProjectMSG.Message;
+﻿using System.ComponentModel;
+using DevExpress.Mvvm;
 using ProjectMSG.Service;
 using ProjectMSG.View;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Text;
-using System.Windows;
 
 namespace ProjectMSG.ViewModel
 {
     public class AdminViewModel : BindableBase, INotifyPropertyChanged
     {
-        public AdminViewModel(PageService pageService, EventBus eventBus, MessageBus messageBus)
+        public AdminViewModel(PageService pageService, MessageBus messageBus)
         {
             _pageService = pageService;
-            _eventBus = eventBus;
             _messageBus = messageBus;
         }
 
         #region Properties
 
         private readonly PageService _pageService;
-        private readonly EventBus _eventBus;
         private readonly MessageBus _messageBus;
 
         #endregion
@@ -46,13 +39,7 @@ namespace ProjectMSG.ViewModel
 
         public RelayCommand Relogin
         {
-            get
-            {
-                return relogin ??= new RelayCommand(async obj =>
-                {
-                    _pageService.ChangePage(new Auth());
-                });
-            }
+            get { return relogin ??= new RelayCommand(async obj => { _pageService.ChangePage(new Auth()); }); }
         }
 
         #endregion

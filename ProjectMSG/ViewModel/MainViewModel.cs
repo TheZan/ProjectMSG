@@ -1,12 +1,9 @@
-﻿using DevExpress.Mvvm;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Windows.Controls;
+using DevExpress.Mvvm;
 using ProjectMSG.Service;
 using ProjectMSG.View;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Windows.Controls;
 
 namespace ProjectMSG.ViewModel
 {
@@ -14,30 +11,28 @@ namespace ProjectMSG.ViewModel
     {
         private readonly PageService _pageService;
 
-        public Page PageSource { get; set; }
-
         public MainViewModel(PageService pageService)
         {
             _pageService = pageService;
 
 
-            _pageService.OnPageChanged += (page) => PageSource = page;
+            _pageService.OnPageChanged += page => PageSource = page;
             _pageService.ChangePage(new Auth());
         }
+
+        public Page PageSource { get; set; }
 
         #region Properties
 
         private bool topMenuVisability;
+
         public bool TopMenuVisability
         {
-            get
-            {
-                return topMenuVisability;
-            }
+            get => topMenuVisability;
             set
             {
                 topMenuVisability = value;
-                NotifyPropertyChanged("TopMenuVisability");
+                NotifyPropertyChanged();
             }
         }
 
@@ -46,12 +41,10 @@ namespace ProjectMSG.ViewModel
         #region PropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

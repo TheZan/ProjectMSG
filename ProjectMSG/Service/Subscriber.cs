@@ -2,11 +2,9 @@
 
 namespace ProjectMSG.Service
 {
-    class EventSubscriber : IDisposable
+    internal class EventSubscriber : IDisposable
     {
         private readonly Action<EventSubscriber> _action;
-
-        public Type MessageType { get; }
 
         public EventSubscriber(Type messageType, Action<EventSubscriber> action)
         {
@@ -14,18 +12,17 @@ namespace ProjectMSG.Service
             _action = action;
         }
 
+        public Type MessageType { get; }
+
         public void Dispose()
         {
             _action?.Invoke(this);
         }
     }
 
-    class MessageSubscriber : IDisposable
+    internal class MessageSubscriber : IDisposable
     {
         private readonly Action<MessageSubscriber> _action;
-
-        public Type ReceiverType { get; }
-        public Type MessageType { get; }
 
         public MessageSubscriber(Type receiverType, Type messageType, Action<MessageSubscriber> action)
         {
@@ -34,11 +31,12 @@ namespace ProjectMSG.Service
             _action = action;
         }
 
+        public Type ReceiverType { get; }
+        public Type MessageType { get; }
+
         public void Dispose()
         {
             _action?.Invoke(this);
         }
     }
-
-
 }

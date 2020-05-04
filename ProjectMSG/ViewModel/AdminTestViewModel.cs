@@ -1,43 +1,37 @@
-﻿using DevExpress.Mvvm;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows;
+using DevExpress.Mvvm;
 using Microsoft.EntityFrameworkCore;
-using ProjectMSG.Event;
 using ProjectMSG.Message;
 using ProjectMSG.Model;
 using ProjectMSG.Service;
 using ProjectMSG.View;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
 using static ProjectMSG.View.AddQuestionDialog;
 
 namespace ProjectMSG.ViewModel
 {
     public class AdminTestViewModel : BindableBase, INotifyPropertyChanged
     {
-        public AdminTestViewModel(PageService pageService, EventBus eventBus, MessageBus messageBus)
+        public AdminTestViewModel(PageService pageService, MessageBus messageBus)
         {
             _pageService = pageService;
-            _eventBus = eventBus;
             _messageBus = messageBus;
 
             _messageBus.Receive<SectionToArticle>(this, async message =>
             {
                 getArticleId = message.Id;
                 GetArticleName = $"Тест: {message.Name}";
-                await Task.Run(() => GetQuestion());
+                await Task.Run(GetQuestion);
             });
         }
 
         #region Properties
 
         private readonly PageService _pageService;
-        private readonly EventBus _eventBus;
         private readonly MessageBus _messageBus;
 
         private AddQuestionDialog addQuestionDialog;
@@ -45,70 +39,58 @@ namespace ProjectMSG.ViewModel
 
         private int getArticleId;
         private string getArticleName;
+
         public string GetArticleName
         {
-            get
-            {
-                return getArticleName;
-            }
+            get => getArticleName;
             set
             {
                 getArticleName = value;
-                NotifyPropertyChanged("GetArticleName");
+                NotifyPropertyChanged();
             }
         }
 
         private Question selectQuestion = new Question();
+
         public Question SelectQuestion
         {
-            get
-            {
-                return selectQuestion;
-            }
+            get => selectQuestion;
             set
             {
                 selectQuestion = value;
-                NotifyPropertyChanged("SelectQuestion");
+                NotifyPropertyChanged();
             }
         }
 
         public int QuestionId
         {
-            get
-            {
-                return SelectQuestion.QuestionId;
-            }
+            get => SelectQuestion.QuestionId;
             set
             {
                 SelectQuestion.QuestionId = value;
-                NotifyPropertyChanged("QuestionId");
+                NotifyPropertyChanged();
             }
         }
 
         public string QuestionText
         {
-            get
-            {
-                return SelectQuestion.QuestionText;
-            }
+            get => SelectQuestion.QuestionText;
             set
             {
                 SelectQuestion.QuestionText = value;
-                NotifyPropertyChanged("QuestionText");
+                NotifyPropertyChanged();
             }
         }
 
         private List<Question> questions;
+
         public List<Question> Questions
         {
-            get
-            {
-                return questions;
-            }
+            get => questions;
             set
             {
                 questions = value;
-                NotifyPropertyChanged("Questions");
+                NotifyPropertyChanged();
             }
         }
 
@@ -127,13 +109,7 @@ namespace ProjectMSG.ViewModel
 
         public RelayCommand Back
         {
-            get
-            {
-                return back ??= new RelayCommand(obj =>
-                {
-                    _pageService.ChangePage(new AdminArticle());
-                });
-            }
+            get { return back ??= new RelayCommand(obj => { _pageService.ChangePage(new AdminArticle()); }); }
         }
 
         private RelayCommand addQuestion;
@@ -166,18 +142,15 @@ namespace ProjectMSG.ViewModel
                 {
                     if (SelectQuestion != null)
                     {
-                        if (MessageBox.Show("Вы действительно хотите удалить вопрос?", "Удаление вопроса", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
-                        {
+                        if (MessageBox.Show("Вы действительно хотите удалить вопрос?", "Удаление вопроса",
+                            MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                             return;
-                        }
-                        else
-                        {
-                            await Task.Run(DelQuestion);
-                        }
+                        await Task.Run(DelQuestion);
                     }
                     else
                     {
-                        MessageBox.Show("Выберите вопрос для удаления!", "Удаление вопроса", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("Выберите вопрос для удаления!", "Удаление вопроса", MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
                     }
                 });
             }
@@ -207,7 +180,8 @@ namespace ProjectMSG.ViewModel
                     }
                     else
                     {
-                        MessageBox.Show("Выберите вопрос для редактирования!", "Редактирование вопроса", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("Выберите вопрос для редактирования!", "Редактирование вопроса",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 });
             }
@@ -219,19 +193,19 @@ namespace ProjectMSG.ViewModel
 
         private async Task GetQuestion()
         {
-            using (MSGCoreContext db = new MSGCoreContext())
+            await using (var db = new MSGCoreContext())
             {
-                testId = await db.Test.Where(p => p.ArticleId == getArticleId).Select(p => p.TestId).FirstOrDefaultAsync();
+                testId = await db.Test.Where(p => p.ArticleId == getArticleId).Select(p => p.TestId)
+                    .FirstOrDefaultAsync();
                 Questions = await db.Question.Where(p => p.TestId == testId).ToListAsync();
             }
         }
 
         private async Task AddQuestion()
         {
-
-            await using (MSGCoreContext db = new MSGCoreContext())
+            await using (var db = new MSGCoreContext())
             {
-                Question add = new Question
+                var add = new Question
                 {
                     QuestionText = questionTextGet,
                     TestId = testId
@@ -240,31 +214,28 @@ namespace ProjectMSG.ViewModel
                 await db.SaveChangesAsync();
 
                 var lastQuestion = db.Question.ToList().Last();
-                int lastId = lastQuestion.QuestionId;
+                var lastId = lastQuestion.QuestionId;
                 foreach (var t in questionAnswer)
                 {
-                    Answer addAnswer = new Answer
+                    var addAnswer = new Answer
                     {
                         AnswerText = t.AnswerText,
                         QuestionId = lastId
                     };
                     db.Answer.Add(addAnswer);
                 }
+
                 await db.SaveChangesAsync();
 
-                string correctText = "";
+                var correctText = "";
                 foreach (var correct in questionAnswer)
-                {
-                    if (correct.AnswerCorrect == true)
-                    {
+                    if (correct.AnswerCorrect)
                         correctText = correct.AnswerText;
-                    }
-                }
 
                 var correctId = await db.Answer.Where(p => p.AnswerText == correctText).Select(p => p.AnswerId)
                     .FirstOrDefaultAsync();
 
-                CorrectAnswer addCorrectAnswer = new CorrectAnswer
+                var addCorrectAnswer = new CorrectAnswer
                 {
                     AnswerId = correctId,
                     QuestionId = lastId
@@ -278,9 +249,9 @@ namespace ProjectMSG.ViewModel
 
         private async Task DelQuestion()
         {
-            await using (MSGCoreContext db = new MSGCoreContext())
+            await using (var db = new MSGCoreContext())
             {
-                Question del = new Question
+                var del = new Question
                 {
                     QuestionId = QuestionId
                 };
@@ -289,12 +260,12 @@ namespace ProjectMSG.ViewModel
                 await db.SaveChangesAsync();
                 await GetQuestion();
             }
+
             SelectQuestion = null;
         }
 
         private async Task EditQuestion()
         {
-
             await using (var db = new MSGCoreContext())
             {
                 var editQuestion = await db.Question.Where(p => p.QuestionId == QuestionId).FirstOrDefaultAsync();
@@ -308,31 +279,28 @@ namespace ProjectMSG.ViewModel
                 await db.SaveChangesAsync();
 
                 var lastQuestion = db.Question.ToList().Last();
-                int lastId = lastQuestion.QuestionId;
+                var lastId = lastQuestion.QuestionId;
                 foreach (var t in questionAnswer)
                 {
-                    Answer addAnswer = new Answer
+                    var addAnswer = new Answer
                     {
                         AnswerText = t.AnswerText,
                         QuestionId = lastId
                     };
                     db.Answer.Add(addAnswer);
                 }
+
                 await db.SaveChangesAsync();
 
-                string correctText = "";
+                var correctText = "";
                 foreach (var correct in questionAnswer)
-                {
-                    if (correct.AnswerCorrect == true)
-                    {
+                    if (correct.AnswerCorrect)
                         correctText = correct.AnswerText;
-                    }
-                }
 
                 var correctId = await db.Answer.Where(p => p.AnswerText == correctText).Select(p => p.AnswerId)
                     .FirstOrDefaultAsync();
 
-                CorrectAnswer addCorrectAnswer = new CorrectAnswer
+                var addCorrectAnswer = new CorrectAnswer
                 {
                     AnswerId = correctId,
                     QuestionId = lastId
@@ -342,12 +310,13 @@ namespace ProjectMSG.ViewModel
 
                 await GetQuestion();
             }
+
             SelectQuestion = null;
         }
 
         private async Task GetAnswerAndCorrect()
         {
-            await using (MSGCoreContext db = new MSGCoreContext())
+            await using (var db = new MSGCoreContext())
             {
                 listAnswers = await db.Answer.Where(p => p.QuestionId == QuestionId).ToListAsync();
                 correctAnswers = await db.CorrectAnswer.Where(p => p.QuestionId == QuestionId).ToListAsync();
@@ -359,7 +328,8 @@ namespace ProjectMSG.ViewModel
         #region ProperyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

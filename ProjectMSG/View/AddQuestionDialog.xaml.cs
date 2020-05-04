@@ -1,94 +1,73 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace ProjectMSG.View
 {
     /// <summary>
-    /// Логика взаимодействия для AddQuestionDialog.xaml
+    ///     Логика взаимодействия для AddQuestionDialog.xaml
     /// </summary>
     public partial class AddQuestionDialog : Window
     {
-        private List<AnswerListClass> answerListCorrect = new List<AnswerListClass>();
-        private int answerListId = 0;
+        private int answerListId;
 
         public AddQuestionDialog()
         {
             InitializeComponent();
         }
 
+        public string GetQuestionText => QuestionText.Text;
+
+        public List<AnswerListClass> GetAnswer { get; } = new List<AnswerListClass>();
+
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            bool correct = false;
+            var correct = false;
 
-            foreach (var isChecked in answerListCorrect)
-            {
-                if (isChecked.AnswerCorrect == true)
-                {
+            foreach (var isChecked in GetAnswer)
+                if (isChecked.AnswerCorrect)
                     correct = true;
-                }
-            }
 
-            if (AnswerList.ItemsSource != null && QuestionText.Text != "" && correct == true)
-            {
-                this.DialogResult = true;
-            }
+            if (AnswerList.ItemsSource != null && QuestionText.Text != "" && correct)
+                DialogResult = true;
             else
-            {
                 MessageBox.Show("Заполните все поля!", "Информация");
-            }
-        }
-
-        public string GetQuestionText
-        {
-            get { return QuestionText.Text; }
-        }
-
-        public List<AnswerListClass> GetAnswer
-        {
-            get { return answerListCorrect; }
         }
 
         private void AddAnswer_OnClick(object sender, RoutedEventArgs e)
         {
             if (Answer.Text != "")
             {
-                answerListCorrect.Add(new AnswerListClass()
+                GetAnswer.Add(new AnswerListClass
                 {
                     AnswerText = Answer.Text,
                     AnswerId = answerListId++
                 });
                 AnswerList.ItemsSource = null;
-                AnswerList.ItemsSource = answerListCorrect;
+                AnswerList.ItemsSource = GetAnswer;
             }
+
             Answer.Clear();
         }
 
         private void DelAnswer_OnClick(object sender, RoutedEventArgs e)
         {
-            answerListCorrect.Remove(answerListCorrect.FirstOrDefault(p => p.AnswerId == answerListId));
+            GetAnswer.Remove(GetAnswer.FirstOrDefault(p => p.AnswerId == answerListId));
             AnswerList.ItemsSource = null;
-            AnswerList.ItemsSource = answerListCorrect;
+            AnswerList.ItemsSource = GetAnswer;
         }
 
         private void EventSetter_OnHandler(object sender, MouseButtonEventArgs e)
         {
-            ListBoxItem lbi = sender as ListBoxItem;
+            var lbi = sender as ListBoxItem;
             if (lbi != null)
             {
-                AnswerListClass fam = lbi.DataContext as AnswerListClass;
+                var fam = lbi.DataContext as AnswerListClass;
                 if (fam != null)
                 {
-                    int answerId = fam.AnswerId;
+                    var answerId = fam.AnswerId;
                     answerListId = answerId;
                 }
             }

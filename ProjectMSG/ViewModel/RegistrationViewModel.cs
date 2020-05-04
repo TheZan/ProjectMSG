@@ -1,27 +1,20 @@
-﻿using DevExpress.Mvvm;
+﻿using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using DevExpress.Mvvm;
 using ProjectMSG.Model;
 using ProjectMSG.Service;
 using ProjectMSG.View;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace ProjectMSG.ViewModel
 {
     public class RegistrationViewModel : BindableBase, INotifyPropertyChanged
     {
-        public RegistrationViewModel(PageService pageService, EventBus eventBus, MessageBus messageBus)
+        public RegistrationViewModel(PageService pageService, MessageBus messageBus)
         {
             _pageService = pageService;
-            _eventBus = eventBus;
             _messageBus = messageBus;
             LoadingVisability = false;
         }
@@ -35,14 +28,14 @@ namespace ProjectMSG.ViewModel
             get
             {
                 return registerUser ??
-                  (registerUser = new RelayCommand(async obj =>
-                  {
-                      ControlDisable = false;
-                      CompletedRegistration = false;
-                      Password = GetPassword(obj);
-                      await Task.Run(() => AddUserAsync());
-                      Back();
-                  }));
+                       (registerUser = new RelayCommand(async obj =>
+                       {
+                           ControlDisable = false;
+                           CompletedRegistration = false;
+                           Password = GetPassword(obj);
+                           await Task.Run(() => AddUserAsync());
+                           Back();
+                       }));
             }
         }
 
@@ -53,10 +46,7 @@ namespace ProjectMSG.ViewModel
             get
             {
                 return backToAuth ??
-                  (backToAuth = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Auth());
-                  }));
+                       (backToAuth = new RelayCommand(obj => { _pageService.ChangePage(new Auth()); }));
             }
         }
 
@@ -65,30 +55,25 @@ namespace ProjectMSG.ViewModel
         #region Properties
 
         private readonly PageService _pageService;
-        private readonly EventBus _eventBus;
         private readonly MessageBus _messageBus;
 
         private bool loadingVisability;
+
         public bool LoadingVisability
         {
-            get
-            {
-                return loadingVisability;
-            }
+            get => loadingVisability;
             set
             {
                 loadingVisability = value;
-                NotifyPropertyChanged("LoadingVisability");
+                NotifyPropertyChanged();
             }
         }
 
         private bool completedRegistration;
+
         public bool CompletedRegistration
         {
-            get
-            {
-                return completedRegistration;
-            }
+            get => completedRegistration;
             set
             {
                 completedRegistration = value;
@@ -97,86 +82,74 @@ namespace ProjectMSG.ViewModel
         }
 
         private bool controlDisable = true;
+
         public bool ControlDisable
         {
-            get
-            {
-                return controlDisable;
-            }
+            get => controlDisable;
             set
             {
                 controlDisable = value;
-                NotifyPropertyChanged("ControlDisable");
+                NotifyPropertyChanged();
             }
         }
 
         private string warningText;
+
         public string WarningText
         {
-            get
-            {
-                return warningText;
-            }
+            get => warningText;
             set
             {
                 warningText = value;
-                NotifyPropertyChanged("WarningText");
+                NotifyPropertyChanged();
             }
         }
 
         private string surname;
+
         public string Surname
         {
-            get
-            {
-                return surname;
-            }
+            get => surname;
             set
             {
                 surname = value;
-                NotifyPropertyChanged("Surname");
+                NotifyPropertyChanged();
             }
         }
 
         private string firstname;
+
         public string Firstname
         {
-            get
-            {
-                return firstname;
-            }
+            get => firstname;
             set
             {
                 firstname = value;
-                NotifyPropertyChanged("Firstname");
+                NotifyPropertyChanged();
             }
         }
 
         private string login;
+
         public string Login
         {
-            get
-            {
-                return login;
-            }
+            get => login;
             set
             {
                 login = value;
-                NotifyPropertyChanged("Login");
+                NotifyPropertyChanged();
             }
         }
 
         private string password;
+
         public string Password
         {
-            get
-            {
-                return password;
-            }
+            get => password;
             set
             {
                 password = value;
-                NotifyPropertyChanged("Password");
+                NotifyPropertyChanged();
             }
         }
 
@@ -186,10 +159,7 @@ namespace ProjectMSG.ViewModel
 
         private void Back()
         {
-            if (CompletedRegistration)
-            {
-                _pageService.ChangePage(new Auth());
-            }
+            if (CompletedRegistration) _pageService.ChangePage(new Auth());
         }
 
         private string GetPassword(object parameter)
@@ -204,7 +174,7 @@ namespace ProjectMSG.ViewModel
             LoadingVisability = true;
             if (Firstname != "" && Surname != "" && Login != "" && Password != "")
             {
-                using (MSGCoreContext db = new MSGCoreContext())
+                using (var db = new MSGCoreContext())
                 {
                     if (db.Users.Where(p => p.Login == Login).Any())
                     {
@@ -213,7 +183,7 @@ namespace ProjectMSG.ViewModel
                     }
                     else
                     {
-                        Users registerUser = new Users
+                        var registerUser = new Users
                         {
                             Firstname = Firstname,
                             Surname = Surname,
@@ -233,6 +203,7 @@ namespace ProjectMSG.ViewModel
                 WarningText = "Заполните все поля!";
                 CompletedRegistration = false;
             }
+
             ControlDisable = true;
             LoadingVisability = false;
         }
@@ -242,12 +213,10 @@ namespace ProjectMSG.ViewModel
         #region PropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion

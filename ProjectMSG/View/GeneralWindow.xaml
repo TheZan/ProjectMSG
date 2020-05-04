@@ -19,6 +19,6 @@
         <BooleanToVisibilityConverter x:Key="topPanelVisability" />
     </Window.Resources>
     <Grid>
-        <Frame Content="{Binding PageSource}" NavigationUIVisibility="Hidden"/>
+        <Frame Content="{Binding PageSource}" NavigationUIVisibility="Hidden" />
     </Grid>
 </Window>

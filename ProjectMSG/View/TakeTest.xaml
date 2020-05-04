@@ -11,22 +11,26 @@
         FontFamily="{materialDesign:MaterialDesignFont}"
         mc:Ignorable="d"
         Title="Тестирование" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
-    
-    <Grid Margin="10">
-        <StackPanel MinHeight="250" MinWidth="500" MaxWidth="500" MaxHeight="800">
-            <TextBlock TextWrapping="Wrap" Margin="5" x:Name="GroupTitle" Text="{Binding QuestionText}" FontSize="24"/>
-            <ListBox VerticalAlignment="Center" x:Name="AnswerBox" FontFamily="Arial" FontSize="20" Margin="0,2" ItemsSource="{Binding}">
+
+    <Grid>
+        <StackPanel Margin="10" MinHeight="250" MinWidth="500" MaxWidth="500" MaxHeight="800">
+            <GroupBox Header="Вопрос">
+                <TextBlock TextWrapping="Wrap" Margin="5" x:Name="GroupTitle" Text="{Binding QuestionText}" FontSize="24" />
+            </GroupBox>
+            <ListBox VerticalAlignment="Center" x:Name="AnswerBox" FontFamily="Arial" FontSize="20" Margin="0,2"
+                     ItemsSource="{Binding}">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListBoxItem}">
                                     <StackPanel x:Name="listItem">
-                                        <TextBlock Margin="3" TextWrapping="Wrap" Text="{Binding AnswerText}"/>
+                                        <TextBlock Margin="3" TextWrapping="Wrap" Text="{Binding AnswerText}" />
+                                        <Separator></Separator>
                                     </StackPanel>
                                     <ControlTemplate.Triggers>
                                         <Trigger Property="IsMouseOver" Value="True">
-                                            <Setter TargetName="listItem" Property="Background" Value="#F1F1F1"/>
+                                            <Setter TargetName="listItem" Property="Background" Value="LightBlue" />
                                         </Trigger>
                                     </ControlTemplate.Triggers>
                                 </ControlTemplate>
@@ -36,14 +40,16 @@
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-            <TextBlock x:Name="MessageError" Visibility="Collapsed" HorizontalAlignment="Center" FontSize="18" FontFamily="Arial" Foreground="Red" Text="Выбран неверный ответ!"></TextBlock>
+            <TextBlock x:Name="MessageError" Visibility="Collapsed" HorizontalAlignment="Center" FontSize="18"
+                       FontFamily="Arial" Foreground="Red" Text="Выбран неверный ответ!" />
         </StackPanel>
         <materialDesign:DialogHost IsOpen="False" x:Name="DialogEnd" Identifier="endTesting">
             <materialDesign:DialogHost.DialogContent>
                 <Grid Margin="20">
                     <StackPanel>
-                        <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="Green" FontSize="20" Text="Поздравляем! Вы прошли тест!"/>
-                        <Button Foreground="White" Click="GoFinish_OnClick" x:Name="GoFinish" Margin="5" Content="Ок"></Button>
+                        <TextBlock Margin="5" VerticalAlignment="Center" HorizontalAlignment="Center"
+                                   Foreground="Green" FontSize="20" Text="Поздравляем! Вы прошли тест!" />
+                        <Button Foreground="White" Click="GoFinish_OnClick" x:Name="GoFinish" Margin="5" Content="Ок" />
                     </StackPanel>
                 </Grid>
             </materialDesign:DialogHost.DialogContent>

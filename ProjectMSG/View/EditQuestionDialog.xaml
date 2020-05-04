@@ -11,7 +11,8 @@
         TextElement.FontSize="14"
         FontFamily="{materialDesign:MaterialDesignFont}"
         mc:Ignorable="d"
-        Title="Изменить вопрос" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen" ResizeMode="NoResize">
+        Title="Изменить вопрос" SizeToContent="WidthAndHeight" WindowStartupLocation="CenterScreen"
+        ResizeMode="NoResize">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -19,17 +20,20 @@
         </Grid.RowDefinitions>
 
         <StackPanel>
-            <TextBox x:Name="QuestionText" MinWidth="500" MaxWidth="500" Margin="5" materialDesign:HintAssist.Hint="Вопрос" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines" FontSize="18"/>
+            <TextBox x:Name="QuestionText" MinWidth="500" MaxWidth="500" Margin="5"
+                     materialDesign:HintAssist.Hint="Вопрос" Style="{StaticResource MaterialDesignFloatingHintTextBox}"
+                     FontFamily="Champagne &amp; Limousines" FontSize="18" />
             <ListBox x:Name="AnswerList" Margin="5" MinHeight="250" MaxHeight="250" MaxWidth="500">
                 <ListBox.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="Удалить" x:Name="DelAnswer" Click="DelAnswer_OnClick"/>
+                        <MenuItem Header="Удалить" x:Name="DelAnswer" Click="DelAnswer_OnClick" />
                     </ContextMenu>
                 </ListBox.ContextMenu>
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <StackPanel Orientation="Horizontal">
-                            <RadioButton IsChecked="{Binding Path=AnswerCorrect, Mode=TwoWay}" x:Name="CorrectAnswerCB" Content="{Binding AnswerText}" GroupName="AnswersRb"></RadioButton>
+                            <RadioButton IsChecked="{Binding Path=AnswerCorrect, Mode=TwoWay}" x:Name="CorrectAnswerCB"
+                                         Content="{Binding AnswerText}" GroupName="AnswersRb" />
                         </StackPanel>
                     </DataTemplate>
                 </ListBox.ItemTemplate>
@@ -42,15 +46,17 @@
                                 </ControlTemplate>
                             </Setter.Value>
                         </Setter>
-                        <EventSetter Event="PreviewMouseRightButtonDown" Handler="EventSetter_OnHandler"></EventSetter>
+                        <EventSetter Event="PreviewMouseRightButtonDown" Handler="EventSetter_OnHandler" />
                     </Style>
                 </ListBox.ItemContainerStyle>
             </ListBox>
-            <TextBox x:Name="Answer" MinWidth="350" Margin="5" materialDesign:HintAssist.Hint="Ответ" Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines" FontSize="18"/>
-            <Button x:Name="AddAnswer" Click="AddAnswer_OnClick"  Margin="5" Foreground="White" Content="Добавить ответ"></Button>
+            <TextBox x:Name="Answer" MaxWidth="500" MinWidth="350" Margin="5" materialDesign:HintAssist.Hint="Ответ"
+                     Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines"
+                     FontSize="18" />
+            <Button x:Name="AddAnswer" Click="AddAnswer_OnClick" Margin="5" Foreground="White" Content="Добавить ответ" />
         </StackPanel>
         <WrapPanel Grid.Row="1" HorizontalAlignment="Right" Margin="0,15,0,0">
-            <Button Foreground="White" IsDefault="True" Click="ButtonBase_OnClick"  MinWidth="60" Margin="0,0,10,0">OK</Button>
+            <Button Foreground="White" IsDefault="True" Click="ButtonBase_OnClick" MinWidth="60" Margin="0,0,10,0">OK</Button>
             <Button Foreground="White" IsCancel="True" MinWidth="60">Отмена</Button>
         </WrapPanel>
     </Grid>

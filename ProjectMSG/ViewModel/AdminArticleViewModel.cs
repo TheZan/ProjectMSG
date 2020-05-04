@@ -1,30 +1,28 @@
-﻿using DevExpress.Mvvm;
-using Microsoft.EntityFrameworkCore;
-using ProjectMSG.Message;
-using ProjectMSG.Model;
-using ProjectMSG.Service;
-using ProjectMSG.View;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Threading.Tasks;
 using System.Windows;
+using DevExpress.Mvvm;
+using Microsoft.EntityFrameworkCore;
+using ProjectMSG.Message;
+using ProjectMSG.Model;
+using ProjectMSG.Service;
+using ProjectMSG.View;
 
 namespace ProjectMSG.ViewModel
 {
     public class AdminArticleViewModel : BindableBase, INotifyPropertyChanged
     {
-        public AdminArticleViewModel(PageService pageService, EventBus eventBus, MessageBus messageBus)
+        public AdminArticleViewModel(PageService pageService, MessageBus messageBus)
         {
-            _pageService = pageService;
-            _eventBus = eventBus;
-            _messageBus = messageBus;
+            this.pageService = pageService;
+            this.messageBus = messageBus;
 
-            _messageBus.Receive<SectionToArticle>(this, async message =>
+            this.messageBus.Receive<SectionToArticle>(this, async message =>
             {
-                GetSectionId = message.Id;
+                getSectionId = message.Id;
                 GetSetctionName = $"Раздел: {message.Name}";
                 await Task.Run(GetArticle);
             });
@@ -32,105 +30,76 @@ namespace ProjectMSG.ViewModel
 
         #region Properties
 
-        private readonly PageService _pageService;
-        private readonly EventBus _eventBus;
-        private readonly MessageBus _messageBus;
+        private readonly PageService pageService;
+        private readonly MessageBus messageBus;
 
-        AddArticleDialog addArticleDialog;
-        EditArticleDialog editArticleDialog;
+        private AddArticleDialog addArticleDialog;
+        private EditArticleDialog editArticleDialog;
 
         private Article selectArticle = new Article();
+
         public Article SelectArticle
         {
-            get
-            {
-                return selectArticle;
-            }
+            get => selectArticle;
             set
             {
                 selectArticle = value;
-                NotifyPropertyChanged("SelectArticle");
+                NotifyPropertyChanged();
             }
         }
 
         public int ArticleId
         {
-            get
-            {
-                return SelectArticle.ArticleId;
-            }
+            get => SelectArticle.ArticleId;
             set
             {
                 SelectArticle.ArticleId = value;
-                NotifyPropertyChanged("ArticleId");
+                NotifyPropertyChanged();
             }
         }
 
         public string ArticleName
         {
-            get
-            {
-                return SelectArticle.ArticleName;
-            }
+            get => SelectArticle.ArticleName;
             set
             {
                 SelectArticle.ArticleName = value;
-                NotifyPropertyChanged("ArticleName");
+                NotifyPropertyChanged();
             }
         }
 
         public string ArticleText
         {
-            get
-            {
-                return SelectArticle.ArticleText;
-            }
+            get => SelectArticle.ArticleText;
             set
             {
                 SelectArticle.ArticleText = value;
-                NotifyPropertyChanged("ArticleText");
-            }
-        }
-
-        public int SectionId
-        {
-            get
-            {
-                return SelectArticle.SectionId;
-            }
-            set
-            {
-                SelectArticle.SectionId = value;
-                NotifyPropertyChanged("SectionId");
+                NotifyPropertyChanged();
             }
         }
 
         private List<Article> articles;
+
         public List<Article> Articles
         {
-            get
-            {
-                return articles;
-            }
+            get => articles;
             set
             {
                 articles = value;
-                NotifyPropertyChanged("Articles");
+                NotifyPropertyChanged();
             }
         }
 
-        private int GetSectionId;
+        private int getSectionId;
         private string getSetctionName;
+
         public string GetSetctionName
         {
-            get
-            {
-                return getSetctionName;
-            }
+            get => getSetctionName;
             set
             {
                 getSetctionName = value;
-                NotifyPropertyChanged("GetSetctionName");
+                NotifyPropertyChanged();
             }
         }
 
@@ -153,8 +122,8 @@ namespace ProjectMSG.ViewModel
                 {
                     if (SelectArticle != null)
                     {
-                        _pageService.ChangePage(new AdminTest());
-                        await _messageBus.SendTo<AdminTestViewModel>(new SectionToArticle(ArticleId, ArticleName));
+                        pageService.ChangePage(new AdminTest());
+                        await messageBus.SendTo<AdminTestViewModel>(new SectionToArticle(ArticleId, ArticleName));
                     }
                 });
             }
@@ -164,13 +133,7 @@ namespace ProjectMSG.ViewModel
 
         public RelayCommand Back
         {
-            get
-            {
-                return back ??= new RelayCommand(obj =>
-                {
-                    _pageService.ChangePage(new AdminSection());
-                });
-            }
+            get { return back ??= new RelayCommand(obj => { pageService.ChangePage(new AdminSection()); }); }
         }
 
         private RelayCommand addArticle;
@@ -204,18 +167,15 @@ namespace ProjectMSG.ViewModel
                 {
                     if (SelectArticle != null)
                     {
-                        if (MessageBox.Show("Вы действительно хотите удалить статью?", "Удаление статьи", MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
-                        {
+                        if (MessageBox.Show("Вы действительно хотите удалить статью?", "Удаление статьи",
+                            MessageBoxButton.YesNo, MessageBoxImage.Warning) != MessageBoxResult.Yes)
                             return;
-                        }
-                        else
-                        {
-                            await Task.Run(DelArticle);
-                        }
+                        await Task.Run(DelArticle);
                     }
                     else
                     {
-                        MessageBox.Show("Выберите статью для удаления!", "Удаление статьи", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("Выберите статью для удаления!", "Удаление статьи", MessageBoxButton.OK,
+                            MessageBoxImage.Warning);
                     }
                 });
             }
@@ -245,7 +205,8 @@ namespace ProjectMSG.ViewModel
                     }
                     else
                     {
-                        MessageBox.Show("Выберите раздел для редактирования!", "Редактирование раздела", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        MessageBox.Show("Выберите раздел для редактирования!", "Редактирование раздела",
+                            MessageBoxButton.OK, MessageBoxImage.Warning);
                     }
                 });
             }
@@ -257,41 +218,41 @@ namespace ProjectMSG.ViewModel
 
         private async Task GetArticle()
         {
-            await using (MSGCoreContext db = new MSGCoreContext())
+            await using (var db = new MSGCoreContext())
             {
-                Articles = await db.Article.Where(p => p.SectionId == GetSectionId).ToListAsync();
+                Articles = await db.Article.Where(p => p.SectionId == getSectionId).ToListAsync();
             }
         }
 
         private async Task AddArticle()
         {
-
-            await using(MSGCoreContext db = new MSGCoreContext())
+            await using (var db = new MSGCoreContext())
             {
-                Article add = new Article
+                var add = new Article
                 {
                     ArticleName = articleNameAdd,
                     ArticleText = articleTextAdd,
-                    SectionId = GetSectionId
+                    SectionId = getSectionId
                 };
                 await db.Article.AddAsync(add);
                 await db.SaveChangesAsync();
 
                 var last = db.Article.ToList().Last();
-                int lastArticle = last.ArticleId;
-                string lastArticleName = last.ArticleName;
-                for (int i = 0; i < articlePhotoAdd.Count; i++)
+                var lastArticle = last.ArticleId;
+                var lastArticleName = last.ArticleName;
+                for (var i = 0; i < articlePhotoAdd.Count; i++)
                 {
-                    Photo addArticlePhoto = new Photo
+                    var addArticlePhoto = new Photo
                     {
                         ArticleId = lastArticle,
                         ArticlePhoto = articlePhotoAdd[i].ArticlePhoto
                     };
                     db.Photo.Add(addArticlePhoto);
                 }
+
                 await db.SaveChangesAsync();
 
-                Test addTest = new Test
+                var addTest = new Test
                 {
                     TestName = lastArticleName,
                     ArticleId = lastArticle
@@ -305,9 +266,9 @@ namespace ProjectMSG.ViewModel
 
         private async Task DelArticle()
         {
-            await using (MSGCoreContext db = new MSGCoreContext())
+            await using (var db = new MSGCoreContext())
             {
-                Article del = new Article
+                var del = new Article
                 {
                     ArticleId = ArticleId
                 };
@@ -316,12 +277,12 @@ namespace ProjectMSG.ViewModel
                 await db.SaveChangesAsync();
                 await GetArticle();
             }
+
             SelectArticle = null;
         }
 
         private async Task EditArticle()
         {
-
             await using (var db = new MSGCoreContext())
             {
                 var editArticle = await db.Article.Where(p => p.ArticleId == ArticleId).FirstOrDefaultAsync();
@@ -332,25 +293,27 @@ namespace ProjectMSG.ViewModel
                 db.Photo.RemoveRange(articlePhotoDel);
                 await db.SaveChangesAsync();
 
-                for (int i = 0; i < articlePhotoAdd.Count; i++)
+                for (var i = 0; i < articlePhotoAdd.Count; i++)
                 {
-                    Photo addArticlePhoto = new Photo
+                    var addArticlePhoto = new Photo
                     {
                         ArticleId = ArticleId,
                         ArticlePhoto = articlePhotoAdd[i].ArticlePhoto
                     };
                     db.Photo.Add(addArticlePhoto);
                 }
+
                 await db.SaveChangesAsync();
 
                 await GetArticle();
             }
+
             SelectArticle = null;
         }
 
         private async Task GetPhoto()
         {
-            await using (MSGCoreContext db = new MSGCoreContext())
+            await using (var db = new MSGCoreContext())
             {
                 articlePhotoAdd = await db.Photo.Where(p => p.ArticleId == ArticleId).ToListAsync();
                 articlePhotoDel = await db.Photo.Where(p => p.ArticleId == ArticleId).ToListAsync();
@@ -362,7 +325,8 @@ namespace ProjectMSG.ViewModel
         #region ProperyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

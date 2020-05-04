@@ -1,80 +1,82 @@
-﻿using DevExpress.Mvvm;
-using ProjectMSG.Message;
-using ProjectMSG.Service;
-using ProjectMSG.View;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Documents;
+using DevExpress.Mvvm;
 using Microsoft.EntityFrameworkCore;
+using ProjectMSG.Message;
 using ProjectMSG.Model;
-using Section = ProjectMSG.Model.Section;
+using ProjectMSG.Service;
+using ProjectMSG.View;
 
 namespace ProjectMSG.ViewModel
 {
     public class ContentViewModel : BindableBase, INotifyPropertyChanged
     {
-        public ContentViewModel(PageService pageService, EventBus eventBus, MessageBus messageBus)
+        public ContentViewModel(PageService pageService, MessageBus messageBus)
         {
             _pageService = pageService;
-            _eventBus = eventBus;
             _messageBus = messageBus;
 
-            _messageBus.Receive<TextMessage>(this, async message =>
-            {
-                GetUserId = Convert.ToInt32(message.Text);
-            });
+            _messageBus.Receive<TextMessage>(this, async message => { GetUserId = Convert.ToInt32(message.Text); });
 
             Task.Run(GetSection);
         }
 
+        #region Methods
+
+        private async Task GetSection()
+        {
+            await using (var db = new MSGCoreContext())
+            {
+                Sections = await db.Section.ToListAsync();
+                Articles = await db.Article.ToListAsync();
+                PhotosMain = await db.Photo.ToListAsync();
+                var firstArticleId = Articles.Select(p => p.ArticleId).FirstOrDefault();
+                Photos = await db.Photo.Where(p => p.ArticleId == firstArticleId).ToListAsync();
+            }
+        }
+
+        #endregion
+
         #region Properties
 
         private readonly PageService _pageService;
-        private readonly EventBus _eventBus;
         private readonly MessageBus _messageBus;
 
         private int getUserId;
 
         public int GetUserId
         {
-            get
-            {
-                return getUserId;
-            }
+            get => getUserId;
             set
             {
                 getUserId = value;
-                NotifyPropertyChanged("GetUserId");
+                NotifyPropertyChanged();
             }
         }
 
         private Article selectArticle = new Article();
+
         public Article SelectArticle
         {
-            get { return selectArticle; }
+            get => selectArticle;
             set
             {
                 selectArticle = value;
-                NotifyPropertyChanged("SelectArticle");
+                NotifyPropertyChanged();
             }
         }
 
         public int ArticleId
         {
-            get
-            {
-                return SelectArticle.ArticleId;
-            }
+            get => SelectArticle.ArticleId;
             set
             {
                 SelectArticle.ArticleId = value;
-                NotifyPropertyChanged("ArticleId");
+                NotifyPropertyChanged();
             }
         }
 
@@ -83,48 +85,38 @@ namespace ProjectMSG.ViewModel
             get
             {
                 if (selectArticle.ArticleId == 0)
-                {
                     return Articles.Select(p => p.ArticleName).FirstOrDefault();
-                }
-                else
-                {
-                    return SelectArticle.ArticleName;
-                }
+                return SelectArticle.ArticleName;
             }
             set
             {
                 SelectArticle.ArticleName = value;
-                NotifyPropertyChanged("ArticleName");
+                NotifyPropertyChanged();
             }
         }
-        
+
         public string ArticleText
         {
             get
             {
                 if (selectArticle.ArticleId == 0)
-                {
                     return Articles.Select(p => p.ArticleText).FirstOrDefault();
-                }
-                else
-                {
-                    return SelectArticle.ArticleText;
-                }
+                return SelectArticle.ArticleText;
             }
             set
             {
                 SelectArticle.ArticleText = value;
-                NotifyPropertyChanged("ArticleText");
+                NotifyPropertyChanged();
             }
         }
 
         public ICollection<Photo> Photos
         {
-            get { return SelectArticle.Photo; }
+            get => SelectArticle.Photo;
             set
             {
                 SelectArticle.Photo = value;
-                NotifyPropertyChanged("Photos");
+                NotifyPropertyChanged();
             }
         }
 
@@ -134,14 +126,11 @@ namespace ProjectMSG.ViewModel
 
         public List<Section> Sections
         {
-            get
-            {
-                return sections;
-            }
+            get => sections;
             set
             {
                 sections = value;
-                NotifyPropertyChanged("Sections");
+                NotifyPropertyChanged();
             }
         }
 
@@ -149,14 +138,11 @@ namespace ProjectMSG.ViewModel
 
         public List<Article> Articles
         {
-            get
-            {
-                return articles;
-            }
+            get => articles;
             set
             {
                 articles = value;
-                NotifyPropertyChanged("Articles");
+                NotifyPropertyChanged();
             }
         }
 
@@ -168,26 +154,14 @@ namespace ProjectMSG.ViewModel
 
         public RelayCommand SelectContent
         {
-            get
-            {
-                return selectContent ??= new RelayCommand(obj =>
-                {
-                    _pageService.ChangePage(new Content());
-                });
-            }
+            get { return selectContent ??= new RelayCommand(obj => { _pageService.ChangePage(new Content()); }); }
         }
 
         private RelayCommand selectTesting;
 
         public RelayCommand SelectTesting
         {
-            get
-            {
-                return selectTesting ??= new RelayCommand(obj =>
-                {
-                    _pageService.ChangePage(new Testing());
-                });
-            }
+            get { return selectTesting ??= new RelayCommand(obj => { _pageService.ChangePage(new Testing()); }); }
         }
 
         private RelayCommand selectProfile;
@@ -206,26 +180,11 @@ namespace ProjectMSG.ViewModel
 
         #endregion
 
-        #region Methods
-
-        private async Task GetSection()
-        {
-            await using (MSGCoreContext db = new MSGCoreContext())
-            {
-                Sections = await db.Section.ToListAsync();
-                Articles = await db.Article.ToListAsync();
-                PhotosMain = await db.Photo.ToListAsync();
-                int firstArticleId = Articles.Select(p => p.ArticleId).FirstOrDefault();
-                Photos = await db.Photo.Where(p => p.ArticleId == firstArticleId).ToListAsync();
-            }
-        }
-
-        #endregion
-
         #region ProperyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }

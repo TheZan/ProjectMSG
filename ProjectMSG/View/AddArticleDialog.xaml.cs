@@ -1,87 +1,67 @@
-﻿using Microsoft.Win32;
-using ProjectMSG.Model;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
+using Microsoft.Win32;
+using ProjectMSG.Model;
 
 namespace ProjectMSG.View
 {
     /// <summary>
-    /// Логика взаимодействия для AddArticleDialog.xaml
+    ///     Логика взаимодействия для AddArticleDialog.xaml
     /// </summary>
     public partial class AddArticleDialog : Window
     {
-        List<Photo> images = new List<Photo>();
-
-        int idPhotoList;
-        int numberPhoto = 0;
+        private int idPhotoList;
+        private int numberPhoto;
 
         public AddArticleDialog()
         {
             InitializeComponent();
         }
 
-        public string ArticleName
-        {
-            get { return articleName.Text; }
-        }
+        public string ArticleName => articleName.Text;
 
-        public string ArticleText
-        {
-            get { return new TextRange(articleText.Document.ContentStart, articleText.Document.ContentEnd).Text; }
-        }
+        public string ArticleText =>
+            new TextRange(articleText.Document.ContentStart, articleText.Document.ContentEnd).Text;
 
-        public List<Photo> ArticleImage
-        {
-            get { return images; }
-        }
+        public List<Photo> ArticleImage { get; } = new List<Photo>();
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (articleName.Text != "" && ArticleText != null && articleImageAdd.ItemsSource != null)
-            {
-                this.DialogResult = true;
-            }
+                DialogResult = true;
             else
-            {
-                MessageBox.Show("Заполните все поля!","Информация");
-            }
+                MessageBox.Show("Заполните все поля!", "Информация");
         }
 
 
         private void addArticleImage_Click(object sender, RoutedEventArgs e)
         {
-            OpenFileDialog dlg = new OpenFileDialog();
+            var dlg = new OpenFileDialog();
             dlg.InitialDirectory = "";
             dlg.Filter = "Image files (*.jpg,*.png,*.bmp)|*.jpg;*.png;*.bmp|All Files (*.*)|*.*";
             if (dlg.ShowDialog() == true)
             {
-                string selectedFileName = dlg.FileName;
+                var selectedFileName = dlg.FileName;
                 var imageArray = ImageConvert.ConvertImageToByteArray(selectedFileName);
-                images.Add(new Photo { ArticlePhoto = imageArray, ArticlePhotoId = numberPhoto++ });
+                ArticleImage.Add(new Photo {ArticlePhoto = imageArray, ArticlePhotoId = numberPhoto++});
                 articleImageAdd.ItemsSource = null;
-                articleImageAdd.ItemsSource = images;
+                articleImageAdd.ItemsSource = ArticleImage;
             }
         }
 
         private void ListViewItem_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
         {
-            ListViewItem lbi = sender as ListViewItem;
+            var lbi = sender as ListViewItem;
             if (lbi != null)
             {
-                Photo fam = lbi.DataContext as Photo;
+                var fam = lbi.DataContext as Photo;
                 if (fam != null)
                 {
-                    int photoId = fam.ArticlePhotoId;
+                    var photoId = fam.ArticlePhotoId;
                     idPhotoList = photoId;
                 }
             }
@@ -89,9 +69,9 @@ namespace ProjectMSG.View
 
         private void deleteImageFromArticle_Click(object sender, RoutedEventArgs e)
         {
-            images.Remove(images.FirstOrDefault(p => p.ArticlePhotoId == idPhotoList));
+            ArticleImage.Remove(ArticleImage.FirstOrDefault(p => p.ArticlePhotoId == idPhotoList));
             articleImageAdd.ItemsSource = null;
-            articleImageAdd.ItemsSource = images;
+            articleImageAdd.ItemsSource = ArticleImage;
         }
     }
 }

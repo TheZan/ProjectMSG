@@ -1,26 +1,21 @@
-﻿using DevExpress.Mvvm;
+﻿using System.ComponentModel;
+using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
+using System.Windows.Controls;
+using DevExpress.Mvvm;
 using Microsoft.EntityFrameworkCore;
 using ProjectMSG.Message;
 using ProjectMSG.Model;
 using ProjectMSG.Service;
 using ProjectMSG.View;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Controls;
-using System.Windows.Input;
 
 namespace ProjectMSG.ViewModel
 {
     public class AuthViewModel : BindableBase, INotifyPropertyChanged
     {
-        public AuthViewModel(PageService pageService, EventBus eventBus, MessageBus messageBus)
+        public AuthViewModel(PageService pageService, MessageBus messageBus)
         {
             _pageService = pageService;
-            _eventBus = eventBus;
             _messageBus = messageBus;
             LoadingVisability = false;
         }
@@ -28,7 +23,6 @@ namespace ProjectMSG.ViewModel
         #region Properties
 
         private readonly PageService _pageService;
-        private readonly EventBus _eventBus;
         private readonly MessageBus _messageBus;
 
         private Users user;
@@ -36,100 +30,86 @@ namespace ProjectMSG.ViewModel
         private int userId;
 
         private string login;
+
         public string Login
         {
-            get
-            {
-                return login;
-            }
+            get => login;
             set
             {
                 login = value;
-                NotifyPropertyChanged("Login");
+                NotifyPropertyChanged();
             }
         }
 
         private string password;
+
         public string Password
         {
-            get
-            {
-                return password;
-            }
+            get => password;
             set
             {
                 password = value;
-                NotifyPropertyChanged("Password");
+                NotifyPropertyChanged();
             }
         }
 
         private string role;
+
         public string Role
         {
-            get
-            {
-                return role;
-            }
+            get => role;
             set
             {
                 role = value;
-                NotifyPropertyChanged("Role");
+                NotifyPropertyChanged();
             }
         }
 
         private string warning;
+
         public string Warning
         {
-            get
-            {
-                return warning;
-            }
+            get => warning;
             set
             {
                 warning = value;
-                NotifyPropertyChanged("Warning");
+                NotifyPropertyChanged();
             }
         }
 
         private bool controlDisable = true;
+
         public bool ControlDisable
         {
-            get
-            {
-                return controlDisable;
-            }
+            get => controlDisable;
             set
             {
                 controlDisable = value;
-                NotifyPropertyChanged("ControlDisable");
+                NotifyPropertyChanged();
             }
         }
 
         private bool completedLogin;
+
         public bool CompletedLogin
         {
-            get
-            {
-                return completedLogin;
-            }
+            get => completedLogin;
             set
             {
                 completedLogin = value;
-                NotifyPropertyChanged("CompletedLogin");
+                NotifyPropertyChanged();
             }
         }
 
         private bool loadingVisability;
+
         public bool LoadingVisability
         {
-            get
-            {
-                return loadingVisability;
-            }
+            get => loadingVisability;
             set
             {
                 loadingVisability = value;
-                NotifyPropertyChanged("LoadingVisability");
+                NotifyPropertyChanged();
             }
         }
 
@@ -168,8 +148,6 @@ namespace ProjectMSG.ViewModel
             }
         }
 
-        
-
         #endregion
 
         #region Methods
@@ -178,7 +156,7 @@ namespace ProjectMSG.ViewModel
         {
             if (Login != "" && Password != "")
             {
-                await using (MSGCoreContext db = new MSGCoreContext())
+                await using (var db = new MSGCoreContext())
                 {
                     user = await db.Users.FirstOrDefaultAsync(u => u.Login == Login);
 
@@ -192,9 +170,21 @@ namespace ProjectMSG.ViewModel
                             CompletedLogin = true;
                             LoadingVisability = false;
                         }
-                        else { Warning = "Неверный логин или пароль!"; CompletedLogin = false; ControlDisable = true; LoadingVisability = false; }
+                        else
+                        {
+                            Warning = "Неверный логин или пароль!";
+                            CompletedLogin = false;
+                            ControlDisable = true;
+                            LoadingVisability = false;
+                        }
                     }
-                    else { Warning = "Пользователь не существует!"; CompletedLogin = false; ControlDisable = true; LoadingVisability = false; }
+                    else
+                    {
+                        Warning = "Пользователь не существует!";
+                        CompletedLogin = false;
+                        ControlDisable = true;
+                        LoadingVisability = false;
+                    }
                 }
             }
             else
@@ -226,7 +216,7 @@ namespace ProjectMSG.ViewModel
                     _pageService.ChangePage(new Content());
                     _messageBus.SendTo<ContentViewModel>(new TextMessage(userId.ToString()));
                     _messageBus.SendTo<ProfileViewModel>(new TextMessage(userId.ToString()));
-                    _messageBus.SendTo<TestingViewModel>(new TextMessage(userId.ToString())); 
+                    _messageBus.SendTo<TestingViewModel>(new TextMessage(userId.ToString()));
                 }
             }
         }
@@ -236,12 +226,10 @@ namespace ProjectMSG.ViewModel
         #region PropertyChanged
 
         public event PropertyChangedEventHandler PropertyChanged;
-        private void NotifyPropertyChanged([CallerMemberName] String propertyName = "")
+
+        private void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
         }
 
         #endregion
