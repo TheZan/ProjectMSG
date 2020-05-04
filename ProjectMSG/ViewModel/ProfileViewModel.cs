@@ -4,9 +4,13 @@ using ProjectMSG.View;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using ProjectMSG.Message;
+using ProjectMSG.Model;
 
 namespace ProjectMSG.ViewModel
 {
@@ -21,6 +25,7 @@ namespace ProjectMSG.ViewModel
             _messageBus.Receive<TextMessage>(this, async message =>
             {
                 GetUserId = Convert.ToInt32(message.Text);
+                Task.Run(GetUser);
             });
         }
 
@@ -45,6 +50,48 @@ namespace ProjectMSG.ViewModel
             }
         }
 
+        private string firstname;
+
+        public string Firstname
+        {
+            get
+            {
+                return $"Имя: {firstname}";
+            }
+            set
+            {
+                firstname = value;
+                NotifyPropertyChanged("Firstname");
+            }
+        }
+
+        private string surname;
+
+        public string Surname
+        {
+            get
+            {
+                return $"Фамилия: {surname}";
+            }
+            set
+            {
+                surname = value;
+                NotifyPropertyChanged("Surname");
+            }
+        }
+
+        private List<string> results = new List<string>();
+
+        public List<string> Results
+        {
+            get { return results; }
+            set
+            {
+                results = value;
+                NotifyPropertyChanged("Results");
+            }
+        }
+
         #endregion
 
         #region Command
@@ -55,11 +102,10 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return selectContent ??
-                  (selectContent = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Content());
-                  }));
+                return selectContent ??= new RelayCommand(obj =>
+                {
+                    _pageService.ChangePage(new Content());
+                });
             }
         }
 
@@ -69,11 +115,10 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return selectTesting ??
-                  (selectTesting = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Testing());
-                  }));
+                return selectTesting ??= new RelayCommand(obj =>
+                {
+                    _pageService.ChangePage(new Testing());
+                });
             }
         }
 
@@ -83,11 +128,26 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return selectProfile ??
-                  (selectProfile = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Profile());
-                  }));
+                return selectProfile ??= new RelayCommand(obj =>
+                {
+                    _pageService.ChangePage(new Profile());
+                });
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private async Task GetUser()
+        {
+            using (MSGCoreContext db = new MSGCoreContext())
+            {
+                Firstname = await db.Users.Where(p => p.UserId == GetUserId).Select(p => p.Firstname)
+                    .FirstOrDefaultAsync();
+                Surname = await db.Users.Where(p => p.UserId == GetUserId).Select(p => p.Surname)
+                    .FirstOrDefaultAsync();
+                Results = db.Test.Where(p => p.Result.Select(p => p.TestId).First() == p.TestId && p.Result.Where(c => c.UserId == GetUserId).Select(p => p.UserId).First() == GetUserId).Select(p => p.TestName).ToList();
             }
         }
 
@@ -102,5 +162,10 @@ namespace ProjectMSG.ViewModel
         }
 
         #endregion
+
+        public class GetResultUser
+        {
+            public string resultName { get; set; }
+        }
     }
 }

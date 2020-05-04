@@ -20,7 +20,7 @@ namespace ProjectMSG
             services.AddTransient<RegistrationViewModel>();
             services.AddSingleton<ContentViewModel>();
             services.AddSingleton<TestingViewModel>();
-            services.AddSingleton<ProfileViewModel>();
+            services.AddTransient<ProfileViewModel>();
             services.AddSingleton<AdminViewModel>();
             services.AddSingleton<AdminSectionViewModel>();
             services.AddSingleton<AdminArticleViewModel>();

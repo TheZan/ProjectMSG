@@ -74,7 +74,7 @@
             <ListBox.ItemTemplate>
                 <DataTemplate>
                     <StackPanel Orientation="Horizontal">
-                        <materialDesign:PackIcon Kind="Book"/>
+                        <materialDesign:PackIcon Kind="Pencil"/>
                         <TextBlock x:Name="tb" Foreground="Black" Text="{Binding TestName, UpdateSourceTrigger=PropertyChanged}" TextWrapping="Wrap"/>
                     </StackPanel>
                 </DataTemplate>

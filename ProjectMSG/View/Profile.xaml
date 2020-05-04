@@ -65,8 +65,19 @@
                 </StackPanel>
             </materialDesign:ColorZone>
         </materialDesign:DrawerHost>
-        <StackPanel Grid.Row="1">
-            <TextBlock Text="{Binding GetUserId}"></TextBlock>
-        </StackPanel>
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition/>
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <StackPanel Grid.Row="0" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock TextAlignment="Center" Text="{Binding Firstname, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" FontFamily="Arial" FontSize="28" Margin="5"></TextBlock>
+                <TextBlock TextAlignment="Center" Text="{Binding Surname, UpdateSourceTrigger=PropertyChanged}" FontWeight="Bold" FontFamily="Arial" FontSize="28" Margin="5"></TextBlock>
+            </StackPanel>
+            <StackPanel Grid.Row="1">
+                <TextBlock Margin="3" Text="Завершенные тесты"></TextBlock>
+                <ListBox IsHitTestVisible="False" Margin="5" ItemsSource="{Binding Results, UpdateSourceTrigger=PropertyChanged}"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </Page>

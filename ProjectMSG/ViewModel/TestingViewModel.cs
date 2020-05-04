@@ -146,6 +146,7 @@ namespace ProjectMSG.ViewModel
                 return selectProfile ??= new RelayCommand(obj =>
                 {
                     _pageService.ChangePage(new Profile());
+                    _messageBus.SendTo<ProfileViewModel>(new TextMessage(GetUserId.ToString()));
                 });
             }
         }
@@ -161,7 +162,7 @@ namespace ProjectMSG.ViewModel
                     takeTest = new TakeTest(TestId, getUserId);
                     if (takeTest.ShowDialog() == true)
                     {
-                        
+                        _messageBus.SendTo<ProfileViewModel>(new TextMessage(GetUserId.ToString()));
                     }
                 });
             }

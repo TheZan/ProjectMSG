@@ -53,7 +53,7 @@ namespace ProjectMSG.View
             }
             else
             {
-                MessageBox.Show("Заполните все поля!","Информаци");
+                MessageBox.Show("Заполните все поля!","Информация");
             }
         }
 
@@ -89,7 +89,7 @@ namespace ProjectMSG.View
 
         private void deleteImageFromArticle_Click(object sender, RoutedEventArgs e)
         {
-            images.Remove(images.Where(p => p.ArticlePhotoId == idPhotoList).FirstOrDefault());
+            images.Remove(images.FirstOrDefault(p => p.ArticlePhotoId == idPhotoList));
             articleImageAdd.ItemsSource = null;
             articleImageAdd.ItemsSource = images;
         }

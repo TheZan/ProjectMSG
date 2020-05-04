@@ -15,7 +15,7 @@
     <Grid Margin="10">
         <StackPanel MinHeight="250" MinWidth="500" MaxWidth="500" MaxHeight="800">
             <TextBlock TextWrapping="Wrap" Margin="5" x:Name="GroupTitle" Text="{Binding QuestionText}" FontSize="24"/>
-            <ListBox VerticalAlignment="Center" x:Name="AnswerBox" FontFamily="Arial" FontSize="20" Margin="0,2" ItemsSource="{Binding}" HorizontalAlignment="Left">
+            <ListBox VerticalAlignment="Center" x:Name="AnswerBox" FontFamily="Arial" FontSize="20" Margin="0,2" ItemsSource="{Binding}">
                 <ListBox.ItemContainerStyle>
                     <Style TargetType="ListBoxItem">
                         <Setter Property="Template">

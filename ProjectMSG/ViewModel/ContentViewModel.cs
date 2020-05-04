@@ -199,6 +199,7 @@ namespace ProjectMSG.ViewModel
                 return selectProfile ??= new RelayCommand(obj =>
                 {
                     _pageService.ChangePage(new Profile());
+                    _messageBus.SendTo<ProfileViewModel>(new TextMessage(GetUserId.ToString()));
                 });
             }
         }
