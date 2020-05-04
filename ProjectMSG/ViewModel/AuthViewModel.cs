@@ -226,7 +226,7 @@ namespace ProjectMSG.ViewModel
                     _pageService.ChangePage(new Content());
                     _messageBus.SendTo<ContentViewModel>(new TextMessage(userId.ToString()));
                     _messageBus.SendTo<ProfileViewModel>(new TextMessage(userId.ToString()));
-                    _messageBus.SendTo<TestingViewModel>(new TextMessage(userId.ToString()));
+                    _messageBus.SendTo<TestingViewModel>(new TextMessage(userId.ToString())); 
                 }
             }
         }

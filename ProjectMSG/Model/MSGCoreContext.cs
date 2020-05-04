@@ -142,8 +142,6 @@ namespace ProjectMSG.Model
 
                 entity.Property(e => e.ResultId).HasColumnName("resultId");
 
-                entity.Property(e => e.CountCorrect).HasColumnName("countCorrect");
-
                 entity.Property(e => e.TestId).HasColumnName("testId");
 
                 entity.Property(e => e.UserId).HasColumnName("userId");

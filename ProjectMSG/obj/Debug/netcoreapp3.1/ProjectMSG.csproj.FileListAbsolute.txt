@@ -84,3 +84,5 @@ C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\Add
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\EditQuestionDialog.g.cs
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\EditQuestionDialog.baml
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\ProjectMSG.csprojAssemblyReference.cache
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\TakeTest.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Debug\netcoreapp3.1\View\TakeTest.baml

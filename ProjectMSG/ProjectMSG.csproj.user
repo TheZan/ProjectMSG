@@ -51,6 +51,9 @@
     <Compile Update="View\Registration.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="View\TakeTest.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="View\Testing.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -99,6 +102,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\Registration.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="View\TakeTest.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="View\Testing.xaml">

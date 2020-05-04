@@ -35,8 +35,6 @@ namespace ProjectMSG.ViewModel
 
         #region Properties
 
-        private List<Info> info = new List<Info>();
-
         private readonly PageService _pageService;
         private readonly EventBus _eventBus;
         private readonly MessageBus _messageBus;

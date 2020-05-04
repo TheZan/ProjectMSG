@@ -6,7 +6,11 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Text;
+using System.Threading.Tasks;
+using System.Windows;
+using Microsoft.EntityFrameworkCore;
 using ProjectMSG.Message;
+using ProjectMSG.Model;
 
 namespace ProjectMSG.ViewModel
 {
@@ -22,6 +26,8 @@ namespace ProjectMSG.ViewModel
             {
                 GetUserId = Convert.ToInt32(message.Text);
             });
+
+            Task.Run(GetTest);
         }
 
         #region Properties
@@ -29,6 +35,8 @@ namespace ProjectMSG.ViewModel
         private readonly PageService _pageService;
         private readonly EventBus _eventBus;
         private readonly MessageBus _messageBus;
+
+        private TakeTest takeTest;
 
         private int getUserId;
 
@@ -45,6 +53,60 @@ namespace ProjectMSG.ViewModel
             }
         }
 
+        private Test selectTest = new Test();
+        public Test SelectTest
+        {
+            get
+            {
+                return selectTest;
+            }
+            set
+            {
+                selectTest = value;
+                NotifyPropertyChanged("SelectTest");
+            }
+        }
+
+        public int TestId
+        {
+            get
+            {
+                return SelectTest.TestId;
+            }
+            set
+            {
+                SelectTest.TestId = value;
+                NotifyPropertyChanged("TestId");
+            }
+        }
+
+        public string TestName
+        {
+            get
+            {
+                return SelectTest.TestName;
+            }
+            set
+            {
+                SelectTest.TestName = value;
+                NotifyPropertyChanged("TestName");
+            }
+        }
+
+        private List<Test> tests;
+        public List<Test> Tests
+        {
+            get
+            {
+                return tests;
+            }
+            set
+            {
+                tests = value;
+                NotifyPropertyChanged("Tests");
+            }
+        }
+
         #endregion
 
         #region Command
@@ -55,11 +117,10 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return selectContent ??
-                  (selectContent = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Content());
-                  }));
+                return selectContent ??= new RelayCommand(obj =>
+                {
+                    _pageService.ChangePage(new Content());
+                });
             }
         }
 
@@ -69,11 +130,10 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return selectTesting ??
-                  (selectTesting = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Testing());
-                  }));
+                return selectTesting ??= new RelayCommand(obj =>
+                {
+                    _pageService.ChangePage(new Testing());
+                });
             }
         }
 
@@ -83,11 +143,39 @@ namespace ProjectMSG.ViewModel
         {
             get
             {
-                return selectProfile ??
-                  (selectProfile = new RelayCommand(obj =>
-                  {
-                      _pageService.ChangePage(new Profile());
-                  }));
+                return selectProfile ??= new RelayCommand(obj =>
+                {
+                    _pageService.ChangePage(new Profile());
+                });
+            }
+        }
+
+        private RelayCommand goToTest;
+
+        public RelayCommand GoToTest
+        {
+            get
+            {
+                return goToTest ??= new RelayCommand(async obj =>
+                {
+                    takeTest = new TakeTest(TestId, getUserId);
+                    if (takeTest.ShowDialog() == true)
+                    {
+                        
+                    }
+                });
+            }
+        }
+
+        #endregion
+
+        #region Methods
+
+        private async Task GetTest()
+        {
+            using (MSGCoreContext db = new MSGCoreContext())
+            {
+                Tests = await db.Test.ToListAsync();
             }
         }
 
