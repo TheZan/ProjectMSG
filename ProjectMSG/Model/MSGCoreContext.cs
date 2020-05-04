@@ -30,8 +30,7 @@ namespace ProjectMSG.Model
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. See http://go.microsoft.com/fwlink/?LinkId=723263 for guidance on storing connection strings.
-                //optionsBuilder.UseSqlServer("data source=DESKTOP-9MAURET\\SQLEXPRESS;initial catalog=MSGCore;persist security info=True;user id=MSGCore;password=test;MultipleActiveResultSets=True");
-                optionsBuilder.UseSqlServer("data source=tcp:zan.database.windows.net,1433;initial catalog=MSGCore;persist security info=True;user id=Zan;password=41velimI;MultipleActiveResultSets=True");
+                optionsBuilder.UseSqlServer("data source=YOUR_SERVER;initial catalog=MSGCore;persist security info=True;user id=YOUR_LOGIN;password=YOUR_PASSWORD;MultipleActiveResultSets=True");
             }
         }
 

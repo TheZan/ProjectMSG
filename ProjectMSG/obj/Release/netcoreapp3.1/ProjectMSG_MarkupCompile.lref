@@ -1,13 +1,16 @@
-﻿C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\GeneratedInternalTypeHelper.g.cs
+﻿
 FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\App.xaml;;
 FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\AddArticleDialog.xaml;;
+FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\AddQuestionDialog.xaml;;
 FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\AddSectionDialog.xaml;;
 FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\Admin.xaml;;
 FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\AdminArticle.xaml;;
 FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\AdminSection.xaml;;
+FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\AdminTest.xaml;;
 FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\Auth.xaml;;
 FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\Content.xaml;;
 FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\EditArticleDialog.xaml;;
+FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\EditQuestionDialog.xaml;;
 FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\EditSectionDialog.xaml;;
 FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\GeneralWindow.xaml;;
 FC:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\View\Profile.xaml;;

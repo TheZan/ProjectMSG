@@ -78,3 +78,11 @@ C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\A
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AdminSection.baml
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\EditArticleDialog.baml
 C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\EditSectionDialog.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\TakeTest.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AddQuestionDialog.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AdminTest.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\EditQuestionDialog.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\TakeTest.g.cs
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AddQuestionDialog.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\AdminTest.baml
+C:\Users\Zan\source\repos\ProjectMSG\ProjectMSG\obj\Release\netcoreapp3.1\View\EditQuestionDialog.baml

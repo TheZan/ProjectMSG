@@ -19,7 +19,7 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <TextBox x:Name="sectionName" MinWidth="250" Margin="5" materialDesign:HintAssist.Hint="Название раздела"
+        <TextBox x:Name="sectionName" MinWidth="250" MaxWidth="250" Margin="5" materialDesign:HintAssist.Hint="Название раздела"
                  Style="{StaticResource MaterialDesignFloatingHintTextBox}" FontFamily="Champagne &amp; Limousines"
                  FontSize="18" />
         <WrapPanel Grid.Row="1" HorizontalAlignment="Right" Margin="0,15,0,0">
