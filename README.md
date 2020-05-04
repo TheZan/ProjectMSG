@@ -3,7 +3,7 @@
 ##### Регистрация и вход
 ![N|Solid](https://i.imgur.com/kO6oJJW.gif)
 ##### Чтение статей
-![N|Solid](https://i.imgur.com/JPsnbtJ.gif)
+![N|Solid](https://i.imgur.com/zpbkBww.gif)
 ##### Прохождение тестов и просмотр профиля
 ![N|Solid](https://i.imgur.com/dJSE8Y8.gif)
 ##### Вход в панель администратора
